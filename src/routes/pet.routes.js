@@ -1,15 +1,16 @@
-import {Router} from 'express';
+import { Router } from 'express';
+import { addPet, deletePet, getPet, getPets, updatePet } from '../controllers/pet.controllers.js';
 
 const router = Router();
 
-router.post('/pet', (req, res) => res.send('Agregando mascota'));
+router.post('/pet', addPet);
 
-router.get('/pet', (req, res) => res.send('Listando mascotas'));
+router.get('/pet', getPets);
 
-router.get('/pet/:id', (req, res) => res.send('Mascota'));
+router.get('/pet/:id', getPet) 
 
-router.put('/pet/:id', (req, res) => res.send('Actualizar mascota'));
+router.put('/pet/:id', updatePet);
 
-router.delete('/pet/.id', (req, res) => res.send('Eliminar mascota'));
+router.delete('/pet/.id', deletePet);
 
-export default router;
+export default router; 

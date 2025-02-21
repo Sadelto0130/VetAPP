@@ -1,13 +1,14 @@
 import {Router}from 'express';
+import { createRegistro, getAllRegistro, getRegistro, updateRegistro } from '../controllers/registro.controllers.js';
 
 const router = Router();
 
-router.get('/registro', (req, res) => res.send('Registros de actividad'));
+router.get('/registros', getAllRegistro);
 
-router.get('/registro/:id', (req, res) => res.send('Registro de actividad'));
+router.get('/registro/:id', getRegistro);
 
-router.post('/registro', (req, res) => res.send('Agregando registro de actividad'));
+router.post('/crear_registro', createRegistro);
 
-router.put('/registro/:id', (req, res) => res.send('Actualizar registro de actividad'));
+router.put('/actualizar_registro/:id', updateRegistro);
 
-export default router;
+export default router; 

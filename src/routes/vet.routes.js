@@ -1,15 +1,16 @@
 import { Router } from 'express';
+import { createVet, deleteVet, getVet, getVets, updateVet } from '../controllers/vet.controllers.js';
 
 const router = Router();
 
-router.post('/vet', (req, res) => res.send('Agregando veterinario'));
+router.post('/vet', createVet);
 
-router.get('/vet', (req, res) => res.send('Listando veterinarios'));
+router.get('/vet', getVets);
 
-router.get('/vet/:id', (req, res) => res.send('Veterinario'));
+router.get('/vet/:id', getVet);
 
-router.put('/vet/:id', (req, res) => res.send('Actualizar veterinario'));
+router.put('/vet/:id', updateVet);
 
-router.delete('/vet/:id', (req, res) => res.send('Eliminar veterinario'));
+router.delete('/vet/:id', deleteVet);
 
-export default router;
+export default router; 
