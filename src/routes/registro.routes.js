@@ -1,14 +1,20 @@
-import {Router}from 'express';
-import { createRegistro, getAllRegistro, getRegistro, updateRegistro } from '../controllers/registro.controllers.js';
+import Router from "express-promise-router";
+import {
+  createRegistro,
+  getAllRegistro,
+  getRegistro,
+  updateRegistro,
+} from "../controllers/registro.controllers.js";
+import {isAuth, tipoUsuario} from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get('/registros', getAllRegistro);
+router.get("/registro", isAuth, getAllRegistro);
 
-router.get('/registro/:id', getRegistro);
+router.get("/registro/:id", isAuth, getRegistro);
 
-router.post('/crear_registro', createRegistro);
+router.post("/crear_registro", isAuth, createRegistro);
 
-router.put('/actualizar_registro/:id', updateRegistro);
+router.put("/actualizar_registro/:id", isAuth, tipoUsuario, updateRegistro);
 
-export default router; 
+export default router;

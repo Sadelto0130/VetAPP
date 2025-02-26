@@ -16,7 +16,6 @@ create table mascotas(
 	tipo varchar(30) not null,
 	idDuenio varchar(15) not null unique,
 	ultDocAtendio varchar(15),
-	idRegistro smallint,
 	primary key(idPet)
 );
 
