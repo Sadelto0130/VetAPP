@@ -1,16 +1,13 @@
 import { Router } from 'express';
-import { createVet, deleteVet, getVet, getVets, updateVet } from '../controllers/vet.controllers.js';
+import { getVet, updateVet, signin } from '../controllers/vet.controllers.js';
+import { isAuth, tipoUsuarioVet } from '../middlewares/auth.middleware.js'
 
 const router = Router();
 
-router.post('/vet', createVet);
+router.post('/signin_vet', signin)
 
-router.get('/vet', getVets);
+router.get('/vet/:id', isAuth, tipoUsuarioVet, getVet); 
 
-router.get('/vet/:id', getVet);
-
-router.put('/vet/:id', updateVet);
-
-router.delete('/vet/:id', deleteVet);
+router.put('/vet/:id', isAuth, tipoUsuarioVet, updateVet);
 
 export default router; 

@@ -2,7 +2,11 @@ import { pool } from "../db.js";
 
 export const getAllRegistro = async (req, res, next) => {
   const result = await pool.query("SELECT * FROM registro");
-  return res.json(result.rows);
+  return res.json({ 
+    message: "Registros obtenidos", 
+    registro: result.rows
+  });
+  next(error);
 };
 
 export const getRegistro = async (req, res) => {
@@ -20,44 +24,48 @@ export const getRegistro = async (req, res) => {
 };
 
 export const createRegistro = async (req, res, next) => {
-  const {
-    idMascota,
-    idDuenio,
-    idVeterinario,
-    fecha,
-    procedimiento,
-    procedimientoDescrip,
-  } = req.body;
+  const { fecha, procedimiento, procedimientoDescrip, idMascota, idveterinario } = req.body;
+  const idDuenio = req.userId; 
 
   try {
+    const existeMascota = await pool.query("SELECT * FROM mascotas WHERE id = $1", [idMascota])
+
+    if(existeMascota.rowCount === 0){
+      return res.status(400).json({
+        message: "No existe la mascota"
+      })
+    }
+
     // db insert
     const result = await pool.query(
-      "INSERT INTO registro (idMascota, idDuenio, idVeterinario, fecha, procedimiento, procedimientoDescrip) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      "INSERT INTO registro (idMascota, idDuenio, fecha, idveterinario, procedimiento, procedimientoDescrip) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
       [
         idMascota,
         idDuenio,
-        idVeterinario,
         fecha,
+        idveterinario,
         procedimiento,
         procedimientoDescrip,
       ]
     );
 
-    console.log(result.rows[0]);
-    res.send("Agregando registro de actividad");
+    res.send({
+      message: "Registro Agregado",
+      registro: result.rows[0],
+    });
   } catch (error) {
     if (error.code === "23505") {
       return res.status(409).json({
         message: "Ya existe el registro",
       });
-    }
-    next(error);
+    } 
+    next(error);   
   }
 };
 
 export const updateRegistro = async (req, res, next) => {
   const id = req.params.id;
-  const { idVeterinario, fecha, procedimiento, procedimientoDescrip } =
+  const { fecha, procedimiento, procedimientoDescrip } =
     req.body;
 
   const datosOriginales = await pool.query(
@@ -70,7 +78,7 @@ export const updateRegistro = async (req, res, next) => {
   }
 
   const updateRegistro = {
-    idVeterinario: idVeterinario ?? datosOriginales.rows[0].idVeterinario,
+    idVeterinario: datosOriginales.rows[0].id,
     fecha: fecha ?? datosOriginales.rows[0].fecha,
     procedimiento: procedimiento ?? datosOriginales.rows[0].procedimiento,
     procedimientoDescrip:
@@ -78,7 +86,7 @@ export const updateRegistro = async (req, res, next) => {
   };
 
   const result = await pool.query(
-    "UPDATE registro SET idveterinario = $1, fecha = $2, procedimiento = $3, procedimientoDescrip = $4 WHERE idregistro = $5 RETURNING *",
+    "UPDATE registro SET idveterinario = $1, fecha = $2, procedimiento = $3, procedimientoDescrip = $4 WHERE id = $5 RETURNING *",
     [
       updateRegistro.idVeterinario,
       updateRegistro.fecha,

@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
-import { pool } from '../db.js';
+import { pool } from '../db.js'; 
 
 export const isAuth = (req, res, next) => {
   const token = req.cookies.token;
 
   if(!token){
-    return res.status(401).json({
+    return res.status(401).json({ 
       message: 'No estas autorizado'
     });
   }
@@ -14,7 +14,7 @@ export const isAuth = (req, res, next) => {
     if(err){
       return res.status(401).json({
         message: 'No estas autorizado'
-      });
+      }); 
     }
 
     req.userId = decoded.id;
@@ -25,7 +25,7 @@ export const isAuth = (req, res, next) => {
   });
 }
 
-export const tipoUsuario = async (req, res, next) => {
+export const tipoUsuarioVet = async (req, res, next) => {
   const token = req.cookies.token;
   let tipoUsuario;
 
@@ -45,6 +45,33 @@ export const tipoUsuario = async (req, res, next) => {
   })
 
   if(tipoUsuario === 'usuario'){
+    return res.status(401).json({
+      message: 'No estas autorizado'
+    });
+  }
+  next()
+}
+
+export const tipoUsuarioClinic = async (req, res, next) => {
+  const token = req.cookies.token;
+  let tipoUsuario;
+
+  if(!token){
+    return res.status(401).json({
+      message: 'No estas autorizado'
+    });
+  }
+  
+  jwt.verify(token, 'xyz123', (err, decoded) => {
+    if(err){
+      return res.status(401).json({
+        message: 'No estas autorizado'
+      });
+    }
+    tipoUsuario = decoded.tipousuario;
+  })
+
+  if(tipoUsuario === 'usuario' && tipoUsuario === 'veterinario'){
     return res.status(401).json({
       message: 'No estas autorizado'
     });
