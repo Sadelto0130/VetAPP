@@ -24,11 +24,11 @@ export const getRegistro = async (req, res) => {
 };
 
 export const createRegistro = async (req, res, next) => {
-  const { fecha, procedimiento, procedimientoDescrip, idMascota, idveterinario } = req.body;
-  const idDuenio = req.userId; 
+  const { id_mascota, id_veterinario, procedimiento, procedimiento_Descrip } = req.body;
+  const id_duenio = req.userId; 
 
   try {
-    const existeMascota = await pool.query("SELECT * FROM mascotas WHERE id = $1", [idMascota])
+    const existeMascota = await pool.query("SELECT * FROM mascotas WHERE id = $1", [id_mascota])
 
     if(existeMascota.rowCount === 0){
       return res.status(400).json({
@@ -38,14 +38,13 @@ export const createRegistro = async (req, res, next) => {
 
     // db insert
     const result = await pool.query(
-      "INSERT INTO registro (idMascota, idDuenio, fecha, idveterinario, procedimiento, procedimientoDescrip) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      "INSERT INTO registro (id_mascota, id_duenio, id_veterinario, procedimiento, procedimiento_descrip) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [
-        idMascota,
-        idDuenio,
-        fecha,
-        idveterinario,
+        id_mascota,
+        id_duenio,
+        id_veterinario,
         procedimiento,
-        procedimientoDescrip,
+        procedimiento_Descrip,
       ]
     );
 

@@ -35,7 +35,7 @@ export const signin = async (req, res) => {
     });
 
     res.cookie("token", token, {
-      httpOnly: true,
+      //httpOnly: true,
       sameSit: "none",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
@@ -51,18 +51,18 @@ export const signin = async (req, res) => {
       });
     }
   }
-};
+}; 
 
 export const register = async (req, res, next) => {
-  const { nombre, apellido, email, password, tipousuario } = req.body;
+  const { nombre, apellido, email, password, tipousuario, estado } = req.body;
 
   try {
     const hashedPass = await bcrypt.hash(password, 10);
     const gravatar = `https://robohash.org/${nombre}+${apellido}?set=set4`
 
     const result = await pool.query(
-      "INSERT INTO users(nombre, apellido, email, password, tipousuario, gravatar) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [nombre, apellido, email, hashedPass, tipousuario, gravatar]
+      "INSERT INTO users(nombre, apellido, email, password, tipousuario, estado, gravatar) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [nombre, apellido, email, hashedPass, tipousuario, estado, gravatar]
     );
 
     const token = await createAcessToken({
@@ -73,8 +73,9 @@ export const register = async (req, res, next) => {
 
     // Se crea la cookie con el token
     res.cookie("token", token, {
-      httpOnly: true,
       sameSite: "none",
+      // httpOnly: true,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 

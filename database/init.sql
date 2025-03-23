@@ -38,22 +38,15 @@ create table veterinario(
 	primary key(matricula)
 );
 
-create table registro(
-	idRegistro serial,
-	idMascota smallint,
-	idDuenio smallint,
-	idVeterinario smallint,
-	fecha timestamp,
-	procedimiento varchar(20),
-	procedimientoDescrip varchar(200),
-	primary key(idRegistro)
+CREATE TABLE registro(
+	id serial primary key,
+	id_mascota varchar(255),
+	id_duenio varchar(255),
+	id_veterinario varchar(255),
+	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	fecha_actualizado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	procedimiento varchar(255),
+	procedimiento_descrip text,
+	estado varchar(255)
 );
 
-create table citas(
-	idCita serial,
-	idVeterinario smallint,
-	fecha timestamp,
-	idMascota smallint,
-	idDuenio smallint,
-	primary key(idCita)
-);
