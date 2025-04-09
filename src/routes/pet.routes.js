@@ -9,10 +9,10 @@ router.post('/add_pet', isAuth, upload.single("foto"), addPet);
 
 router.get('/get_pets', isAuth, getPets);
 
-router.get('/pet/:id', isAuth, getPet) 
+router.get('/get_pet/:id', isAuth, getPet) 
 
-router.put('/pet/:id', isAuth, upload.single("foto"), updatePet);
+router.put('/update_pet/:id', isAuth, upload.single("foto"), updatePet);
 
-router.delete('/delete_pet/:id', isAuth, deletePet);
+router.delete('/delete_pet/:id', isAuth, deletePet); 
 
 export default router; 

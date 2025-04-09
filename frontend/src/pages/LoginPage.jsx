@@ -5,6 +5,7 @@ import {
   ButtonWhite,
   Header,
   Label,
+  Container
 } from "../components/ui";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -20,34 +21,23 @@ function LoginPage() {
   const onSubmit = handleSubmit(async (data) => {
     const user = await sign(data);
 
-    if(user) {
+    if (user) {
       navigate("/profile");
     }
-  }); 
-
-  function handleClick() {
-    navigate('/register')
-  }
+  });
 
   return (
-    <div
-      className="h-screen flex items-center justify-center relative bg-center bg-no-repeat"
-      style={{
-        backgroundImage:
-          "url('https://img.freepik.com/vector-gratis/gente-jugando-sus-mascotas_52683-37895.jpg?t=st=1741679870~exp=1741683470~hmac=a07e95ae19c83c1cb56c0bbcd1502bf254eba79038975f49df9f5e7cce2c8760&w=1060')",
-      }}
+    <Container
+      className="h-[calc(100vh-7rem)] flex items-center justify-center relative bg-center bg-no-repeat"
     >
-      <Card>        
+      <Card>
         <Header> INICIAR SESIÓN </Header>
-        {
-          errors && (
-            errors.map(err => (
-              <p className="text-white text-center bg-red-500 rounded-md p-2">
-                {err}
-              </p>
-            ))
-          )
-        }
+        {errors &&
+          errors.map((err, index) => (
+            <p key={index} className="text-white text-center bg-red-500 rounded-md p-2">
+              {err}
+            </p>
+          ))}
         <form onSubmit={onSubmit}>
           <div>
             <Label htmlFor="email">Email</Label>
@@ -69,16 +59,8 @@ function LoginPage() {
 
           <Button> INICIAR SESIÓN </Button>
         </form>
-
-        <div className="flex items-center space-x-4">
-          <hr className="w-full border border-gray-300" />
-          <div className="font-semibold text-gray-400">O</div>
-          <hr className="w-full border border-gray-300" />
-        </div>
-
-        <ButtonWhite onClick={handleClick}>REGISTRARSE</ButtonWhite>
       </Card>
-    </div>
+    </Container>
   );
 }
 
