@@ -50,6 +50,13 @@ CREATE TABLE registro (
     estado VARCHAR(255)
 );
 
+CREATE OR REPLACE FUNCTION public.actualizar_fecha_actualizado()
+RETURNS trigger AS $$
+BEGIN
+  NEW.fecha_actualizado := CURRENT_TIMESTAMP;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER trigger_actualizar_fecha
     BEFORE UPDATE 
