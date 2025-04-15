@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route, Outlet, useLocation } from "react-router-dom";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
@@ -24,20 +24,24 @@ import { useState } from "react";
 
 function App() {
   const { isAuth, loading } = useAuth();  
+  const location = useLocation()
 
   return (
     <>
-      <div
-        className="fixed inset-0 w-full h-full opacity-50 z-0 overflow-hidden"
-        style={{
-          backgroundImage:
-            "url('https://img.freepik.com/vector-gratis/coleccion-personas-diferentes-mascotas_23-2148402944.jpg?t=st=1743231691~exp=1743235291~hmac=2574067afa2027763921792cc6999dc71c06b002335920f3262d245e6cbdd435&w=996')",
-          backgroundSize: "auto",
-          backgroundPosition: "center",
-          backgroundRepeat: "repeat-y",
-          backgroundAttachment: "fixed",
-        }}
-      ></div>
+      {/* Aplica el fondo solo si la ruta no es "/" (homepage) */}
+      {location.pathname !== "/" && (
+        <div
+          className="fixed inset-0 w-full h-full opacity-50 z-0 overflow-hidden"
+          style={{
+            backgroundImage:
+              "url('https://img.freepik.com/vector-gratis/coleccion-personas-diferentes-mascotas_23-2148402944.jpg?t=st=1743231691~exp=1743235291~hmac=2574067afa2027763921792cc6999dc71c06b002335920f3262d245e6cbdd435&w=996')",
+            backgroundSize: "auto",
+            backgroundPosition: "center",
+            backgroundRepeat: "repeat-y",
+            backgroundAttachment: "fixed",
+          }}
+        ></div>
+      )}
       <Navbar />
       <ScrollTop />
       <Container className="py-6">
@@ -70,7 +74,7 @@ function App() {
               <Route path="/pet/:id/edit_pet" element={<FormMascota />} />
               <Route path="/pet/:id/records" element={<PetRecord />} />
               <Route path="/pet/:id/create_record" element={<CreateRecord />} />
-              <Route path="/pet/edit_record/:id" element={<EditRecord />} />
+              <Route path="/pet/edit_record/:id" element={<CreateRecord />} />
               <Route path="/pet/:id/profile" element={<PetProfile />} />
             </Route>
           </Route>

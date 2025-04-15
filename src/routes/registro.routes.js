@@ -6,7 +6,8 @@ import {
   /* getRegistrosPet, */
   updateRegistro,
   getAllRegistroPet,
-  getUserRecordsPets
+  getUserRecordsPets,
+  inactiveRecord
 } from "../controllers/registro.controllers.js";
 import {isAuth, tipoUsuarioVet} from "../middlewares/auth.middleware.js";
 import { validateSchema } from "../middlewares/validate.middleware.js";
@@ -24,6 +25,8 @@ router.get("/registros_mascota/:id", isAuth, getAllRegistroPet);
 
 router.post("/crear_registro", isAuth, validateSchema(crearRegistro), createRegistro);
 
-router.put("/actualizar_registro/:id", isAuth, tipoUsuarioVet, validateSchema(actualizarRegistro), updateRegistro);
+router.put("/actualizar_registro/:id", isAuth, /* tipoUsuarioVet, */ validateSchema(actualizarRegistro), updateRegistro);
 
-export default router;
+router.put("/borrar_registro/:id", isAuth, inactiveRecord)
+
+export default router; 

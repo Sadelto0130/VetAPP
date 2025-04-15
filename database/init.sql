@@ -39,14 +39,21 @@ create table veterinario(
 );
 
 CREATE TABLE registro(
-	id serial primary key,
-	id_mascota varchar(255),
-	id_duenio varchar(255),
-	id_veterinario varchar(255),
-	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	fecha_actualizado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	procedimiento varchar(255),
-	procedimiento_descrip text,
-	estado varchar(255)
+	id integer NOT NULL DEFAULT nextval('registro_id_seq'::regclass),
+	id_mascota character varying(255) COLLATE pg_catalog."default",
+	id_duenio character varying(255) COLLATE pg_catalog."default",
+	id_veterinario character varying(255) COLLATE pg_catalog."default",
+	fecha_creacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+	fecha_actualizado timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+	procedimiento character varying(255) COLLATE pg_catalog."default",
+	procedimiento_descrip text COLLATE pg_catalog."default",
+	estado character varying(255) COLLATE pg_catalog."default",
+	CONSTRAINT registro_pkey PRIMARY KEY (id)
 );
+
+CREATE OR REPLACE TRIGGER trigger_actualizar_fecha
+    BEFORE UPDATE 
+    ON public.registro
+    FOR EACH ROW
+    EXECUTE FUNCTION public.actualizar_fecha_actualizado();
 

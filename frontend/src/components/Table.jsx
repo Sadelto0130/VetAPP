@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { usePets } from "../context/PetContext";
 
 function Table({ dataTable }) {
+  const {inactiveRecordPet} = usePets()
   const [data, setData] = useState(dataTable);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -24,14 +28,16 @@ function Table({ dataTable }) {
   };
 
   const handleEdit = (id) => {
-    alert("Editar ID: " + id);
+    navigate(`/pet/edit_record/${id}`)
   };
 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm("¿Estás seguro de borrar?");
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("¿Estás seguro de borrar el registro?");
     if (confirmDelete) {
+      await inactiveRecordPet(id)
       const updated = data.filter((item) => item.id !== id);
       setData(updated);
+      window.alert("Registro Borrado")
 
       // Asegura que no se quede en una página vacía después de borrar
       const totalPages = Math.ceil(updated.length / itemsPerPage);
@@ -42,10 +48,14 @@ function Table({ dataTable }) {
   };
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
-  const paginatedData = data.slice(
+  const recordData = data.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  useEffect(() => {
+    setData(dataTable || []);
+  }, [dataTable]);
 
   return (
     <div className="overflow-x-auto space-y-4">
@@ -77,14 +87,23 @@ function Table({ dataTable }) {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer bg-gray-100" onClick={() => sortBy("nombre")}>
-                Nombre
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer bg-gray-100"
+                onClick={() => sortBy("nombre")}
+              >
+                Procedimiento
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer bg-gray-100" onClick={() => sortBy("especie")}>
-                Especie
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer bg-gray-100"
+                onClick={() => sortBy("especie")}
+              >
+                Descripcion
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer bg-gray-100" onClick={() => sortBy("edad")}>
-                Edad
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer bg-gray-100"
+                onClick={() => sortBy("edad")}
+              >
+                Fecha
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase bg-gray-100">
                 Acciones
@@ -92,18 +111,32 @@ function Table({ dataTable }) {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {paginatedData.map((mascota) => (
-              <tr key={mascota.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{mascota.nombre}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{mascota.especie}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{mascota.edad}</td>
-                <td className="px-6 py-4 space-x-2">
-                  <button onClick={() => handleEdit(mascota.id)} className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                    Editar
-                  </button>
-                  <button onClick={() => handleDelete(mascota.id)} className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Borrar
-                  </button>
+            {recordData.map((record) => (
+              <tr key={record.id}>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {record.procedimiento}
+                </td>
+                <td className="px-6 py-4 whitespace-normal">
+                  {record.procedimiento_descrip}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {new Date(record.fecha_creacion).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex flex-col gap-2 w-max">
+                    <button
+                      onClick={() => handleEdit(record.id)}
+                      className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(record.id)}
+                      className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                    >
+                      Borrar
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -113,22 +146,34 @@ function Table({ dataTable }) {
 
       {/* Tarjetas para móvil */}
       <div className="md:hidden space-y-4">
-        {paginatedData.map((mascota) => (
-          <div key={mascota.id} className="bg-white p-4 shadow rounded space-y-2 border">
+        {recordData.map((mascota) => (
+          <div
+            key={mascota.id}
+            className="bg-white p-4 shadow rounded space-y-2 border"
+          >
             <div className="text-sm">
-              <span className="font-semibold">Nombre: </span>{mascota.nombre}
+              <span className="font-semibold">Procedimiento: </span>
+              {mascota.procedimiento}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Especie: </span>{mascota.especie}
+              <span className="font-semibold">Descripcion: </span>
+              {mascota.procedimiento_descrip}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Edad: </span>{mascota.edad}
+              <span className="font-semibold">Fecha: </span>
+              {new Date(mascota.fecha_creacion).toLocaleDateString()}
             </div>
             <div className="flex gap-2 pt-2">
-              <button onClick={() => handleEdit(mascota.id)} className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+              <button
+                onClick={() => handleEdit(mascota.id)}
+                className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+              >
                 Editar
               </button>
-              <button onClick={() => handleDelete(mascota.id)} className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+              <button
+                onClick={() => handleDelete(mascota.id)}
+                className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+              >
                 Borrar
               </button>
             </div>
@@ -146,7 +191,9 @@ function Table({ dataTable }) {
           Anterior
         </button>
         <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
           className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
         >

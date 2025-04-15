@@ -60,7 +60,7 @@ export const updatePet = async (req, res, next) => {
   const { nombre, foto, raza, fecha_nacimiento, tipo, peso } = req.body;
 
   const datosOriginales = await pool.query(
-    "SELECT * FROM mascotas WHERE id = $1",
+    "SELECT * FROM mascotas WHERE id = $1", 
     [id]
   );
 

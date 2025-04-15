@@ -6,7 +6,10 @@ import {
   getPetById,
   updatePet,
   createRecords,
-  loadRecordById
+  loadRecordById,
+  updateRecordPet,
+  getRecord,
+  inactiveRecord
 } from "../api/pets.api";
 
 const PetContext = createContext();
@@ -61,10 +64,34 @@ export const PetProvider = ({ children }) => {
     return res.data;
   };
 
+  const loadRecord = async (id) => {
+    const res = await getRecord(id);
+    return res.data;
+  }
+
   const loadRecordPet = async (id) => { 
     const res = await loadRecordById(id);
+    setRecords(res.registro)
     return Array.isArray(res.data.registro) ? res.data.registro : [];
   };
+
+  const updateRecordById = async(id, record) => {
+    try {
+      const res = await updateRecordPet(id, record)
+      return res.data
+    } catch (error) {
+      setErrors([error.response.data.message || console.error(error)])
+    }
+  }
+
+  const inactiveRecordPet = async(id) => {
+    try {
+      const res = await inactiveRecord(id)
+      return res.data
+    } catch (error) {
+      setErrors([error.response.data.message || console.error(error)])
+    }
+  }
 
   return (
     <PetContext.Provider
@@ -77,6 +104,9 @@ export const PetProvider = ({ children }) => {
         updatePetById,
         createRegistro,
         loadRecordPet,
+        loadRecord,
+        updateRecordById,
+        inactiveRecordPet,
         errors,
       }}
     >

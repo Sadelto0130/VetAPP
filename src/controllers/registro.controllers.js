@@ -2,7 +2,9 @@ import { pool } from "../db.js";
 
 export const getAllRegistro = async (req, res, next) => {
   try {
-    const result = await pool.query("SELECT * FROM registro");
+    const result = await pool.query(
+      "SELECT * FROM registro AND estado != 'inactivo'"
+    );
     return res.json({
       message: "Registros obtenidos",
       registro: result.rows,
@@ -16,7 +18,7 @@ export const getAllRegistroPet = async (req, res, next) => {
   const id = req.params.id;
   try {
     const result = await pool.query(
-      "SELECT * FROM registro WHERE id_mascota = $1 ORDER BY fecha_creacion DESC",
+      "SELECT * FROM registro WHERE id_mascota = $1 AND estado != 'inactivo' ORDER BY fecha_creacion DESC",
       [id]
     );
     return res.json({
@@ -30,7 +32,10 @@ export const getAllRegistroPet = async (req, res, next) => {
 
 export const getRegistro = async (req, res) => {
   const id = req.params.id;
-  const result = await pool.query("SELECT * FROM registro WHERE id = $1", [id]);
+  const result = await pool.query(
+    "SELECT * FROM registro WHERE id = $1 AND estado != 'inactivo'",
+    [id]
+  );
 
   if (result.rowCount === 0) {
     return res.status(404).json({ message: "Registro no encontrado" });
@@ -61,7 +66,7 @@ export const createRegistro = async (req, res, next) => {
 
     // db insert
     const existeMascota = await pool.query(
-      "SELECT * FROM mascotas WHERE id = $1",
+      "SELECT * FROM mascotas WHERE id = $1 AND estado = 'inactivo'",
       [id_mascota]
     );
 
@@ -93,10 +98,11 @@ export const createRegistro = async (req, res, next) => {
 
 export const updateRegistro = async (req, res, next) => {
   const id = req.params.id;
-  const { fecha, procedimiento, procedimientoDescrip } = req.body;
+  const { procedimiento, procedimiento_descrip, estado, id_veterinario } =
+    req.body;
 
   const datosOriginales = await pool.query(
-    "SELECT * FROM registro WHERE idregistro = $1",
+    "SELECT * FROM registro WHERE id = $1 AND estado != 'inactivo'",
     [id]
   );
 
@@ -105,26 +111,32 @@ export const updateRegistro = async (req, res, next) => {
   }
 
   const updateRegistro = {
-    idVeterinario: datosOriginales.rows[0].id,
-    fecha: fecha ?? datosOriginales.rows[0].fecha,
+    id_veterinario: id_veterinario ?? datosOriginales.rows[0].id_veterinario,
     procedimiento: procedimiento ?? datosOriginales.rows[0].procedimiento,
-    procedimientoDescrip:
-      procedimientoDescrip ?? datosOriginales.rows[0].procedimientoDescrip,
+    procedimiento_descrip:
+      procedimiento_descrip ?? datosOriginales.rows[0].procedimiento_descrip,
+    estado: estado ?? datosOriginales.rows[0].estado,
   };
 
-  const result = await pool.query(
-    "UPDATE registro SET idveterinario = $1, fecha = $2, procedimiento = $3, procedimientoDescrip = $4 WHERE id = $5 RETURNING *",
-    [
-      updateRegistro.idVeterinario,
-      updateRegistro.fecha,
-      updateRegistro.procedimiento,
-      updateRegistro.procedimientoDescrip,
-      id,
-    ]
-  );
-
-  return res.json(result.rows[0]);
-  next(error);
+  try {
+    console.log("enviado registro update");
+    const result = await pool.query(
+      "UPDATE registro SET id_veterinario = $1, procedimiento = $2, procedimiento_descrip = $3, estado = $4  WHERE id = $5 RETURNING *",
+      [
+        updateRegistro.id_veterinario,
+        updateRegistro.procedimiento,
+        updateRegistro.procedimiento_descrip,
+        updateRegistro.estado,
+        id,
+      ]
+    );
+    return res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error al actualizar registro:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Error interno del servidor", error: error.message });
+  }
 };
 
 export const getUserRecordsPets = async (req, res, next) => {
@@ -136,6 +148,7 @@ export const getUserRecordsPets = async (req, res, next) => {
         r.procedimiento,  
         r.procedimiento_descrip, 
         r.fecha_creacion, 
+        r.estado,
         m.id AS mascota_id, 
         m.nombre, 
         m.raza, 
@@ -145,7 +158,8 @@ export const getUserRecordsPets = async (req, res, next) => {
         m.idduenio
       FROM registro r
       JOIN mascotas m ON CAST(r.id_mascota AS INTEGER) = m.id
-      WHERE CAST(m.idduenio AS INTEGER) = ${id}
+      WHERE CAST(m.idduenio AS INTEGER) = ${id} 
+      AND r.estado != 'inactivo'
       ORDER BY r.fecha_creacion DESC;
   `);
     return res.json({
@@ -154,5 +168,21 @@ export const getUserRecordsPets = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+export const inactiveRecord = async (req, res, next) => {
+  const id = req.params.id; 
+  try {
+    const result = await pool.query(
+      " DELETE FROM registro WHERE id = $1 RETURNING *",
+      [id]
+    );
+    return res.json({ message: "Mascota eliminada", mascota: result.rows[0] });
+  } catch (error) {
+    console.error("Error al borrar registro:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Error interno del servidor", error: error.message });
   }
 };

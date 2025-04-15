@@ -1,4 +1,4 @@
-export const pets = [
+export const pets_types = [
   {
     tipo: "Perro",
   },

@@ -19,7 +19,7 @@ function Navbar() {
   }, [open]);
 
   return (
-    <header className="bg-white shadow-lg rounded-lg relative z-10">
+    <header className="bg-white shadow-lg rounded-lg relative z-10 text-xl font-bold">
       <nav className="flex justify-between items-center h-16 px-6 md:px-10">
         <Link to="/" className="text-lg font-semibold hover:text-blue-500">
           Vet APP

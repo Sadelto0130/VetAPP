@@ -1,5 +1,6 @@
 import app from './app.js';
+import { PORT } from './config.js';
 
 // conexion al servidor
-app.listen(3000)
-console.log('Hello, world!', 3000);
+app.listen(PORT)
+console.log('Servidor iniciado!', PORT);

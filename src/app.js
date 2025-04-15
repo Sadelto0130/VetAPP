@@ -8,20 +8,27 @@ import usuarioRoutes from "./routes/auth.routes.js";
 import mascotaRoutes from "./routes/pet.routes.js";
 import veterinarioRoutes from "./routes/vet.routes.js";
 import clinicRoutes from "./routes/clinic.routes.js"
+import { pool } from "./db.js";
+import { ORIGIN_CORS } from "./config.js";
 
 //Configuracion de express
 const app = express();
 
 app.use(cors({
-  origin: process.env.URL_FRONT,
+  origin: ORIGIN_CORS,
   credentials: true
 }))
+
 app.use(morgan("dev"));
 app.use(cookieParser()); // lee las cookies que se envian desde el frontend
 app.use(express.json()); // convierte todo lo que llega en json a javascript
 app.use(express.urlencoded({ extended: false })); // permite enviar formularios desde el frontend
 
 app.get("/", (req, res) => res.json({ message: "Bienvenidos pagina vet" }));
+app.get("/api/ping", async (req, res) => {
+  const result = await pool.query('SELECT NOW()')
+  return res.json(result.rows[0])
+});
 
 app.use("/api", registroRoutes);
 app.use("/api", usuarioRoutes);

@@ -13,3 +13,9 @@ export const updatePet = (id, pet, config) => axios.put(`/update_pet/${id}`, pet
 export const createRecords = (record) => axios.post("/crear_registro", record)
 
 export const loadRecordById = (id) => axios.get(`/registros_mascota/${id}`)
+
+export const updateRecordPet = (id, record) => axios.put(`/actualizar_registro/${id}`, record)
+
+export const getRecord = (id) => axios.get(`/registro/${id}`)  
+
+export const inactiveRecord = (id) => axios.put(`/borrar_registro/${id}`)

@@ -1,4 +1,4 @@
-import { pets } from "../pets/pets";
+import { pets_types } from "../pets_types/pets_types"; //tipos de mascotas
 import {
   Card,
   Container,

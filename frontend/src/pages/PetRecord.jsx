@@ -31,15 +31,16 @@ function PetRecord() {
       }
     };
     getDataPet();
-  }, [params.id, loadPetById, navigate]);
+  }, [params.id, loadPetById, navigate]); 
 
   useEffect(() => {
     const getDataRecord = async () => {
       try {
         const dataRecord = await loadRecordPet(params.id);
 
-        if (!dataRecord || Object.keys(dataRecord).length === 0) {
-          navigate(`/pet/${params.id}/records`);
+        if (!dataRecord || !Array.isArray(dataRecord)) {
+          console.warn("Registros vacíos o inválidos");
+          setRecords([]);
           return;
         }
         setRecords(dataRecord);
@@ -65,7 +66,7 @@ function PetRecord() {
             <div className="bg-white/80 relative shadow rounded-lg w-5/6 md:w-5/6  lg:w-4/6 xl:w-3/6 mx-auto">
               <div className="flex justify-center pb-3">
                 <img
-                  src={pet.foto}
+                  src={pet?.foto || "/img/default_pet.png"}
                   alt=""
                   className="rounded-full mx-auto absolute -top-20 w-52 h-52 shadow-md border-4 border-white transition duration-200 transform hover:scale-110"
                 />
@@ -121,7 +122,7 @@ function PetRecord() {
                     <div className="flex justify-between items-center">
                       <div>
                         <h4 className="font-bold text-gray-900 text-lg uppercase">
-                          {record.procedimiento}
+                          {record.procedimiento} 
                         </h4>
                         <p className="text-gray-600 text-xs mt-1 uppercase">
                           {record.procedimiento_descrip}

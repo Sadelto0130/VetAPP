@@ -6,22 +6,38 @@ import { useEffect, useState } from "react";
 
 function Registros() {
   const { user, getUserRecords, registros } = useAuth();
-  const navigate = useNavigate();
+  const {inactiveRecordPet} = usePets() 
   const [loading, setLoading] = useState(true);
+  const [registrosLocal, setRegistrosLocal] = useState([]);
+  const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("¿Estás seguro de borrar el registro?");
+    if (confirmDelete) {
+      await inactiveRecordPet(id);
+      setRegistrosLocal((prev) => prev.filter((r) => r.registro_id !== id));
+      window.alert("Registro Borrado")
+    }
+  };
   
 
   useEffect(() => {
-    const registros = async() =>{
+    const cargarRegistros = async () => {
       if (user !== null) {
         await getUserRecords();
-        setLoading(false)
+        setRegistrosLocal(registros); 
+        setLoading(false);
       }
       if (!user) {
         navigate("/login");
       }
-    }
-    registros()
+    };
+    cargarRegistros();
   }, [user]);
+  
+  useEffect(() => {
+    setRegistrosLocal(registros);
+  }, [registros]);
 
   return (
     <>
@@ -38,9 +54,8 @@ function Registros() {
             : "flex flex-wrap gap-6 justify-center pt-6"
         }`}
       >
-        {registros.map((registro) => (           
+        {registrosLocal.map((registro) => (           
           <Card key={registro.registro_id}>
-            {console.log(`Registro id: ${registro.registro_id}`)    } 
             <div className="flex items-center justify-between gap-4 mb-2">
               <img
                 src={registro.foto}
@@ -72,6 +87,7 @@ function Registros() {
               <button
                 className="select-none rounded-lg bg-red-900 py-2 px-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 type="button"
+                onClickCapture={() => handleDelete(registro.registro_id)}
               >
                 Borrar
               </button>
