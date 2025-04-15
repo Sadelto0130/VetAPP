@@ -38,18 +38,18 @@ create table veterinario(
 	primary key(matricula)
 );
 
-CREATE TABLE registro(
-	id integer NOT NULL DEFAULT nextval('registro_id_seq'::regclass),
-	id_mascota character varying(255) COLLATE pg_catalog."default",
-	id_duenio character varying(255) COLLATE pg_catalog."default",
-	id_veterinario character varying(255) COLLATE pg_catalog."default",
-	fecha_creacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-	fecha_actualizado timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-	procedimiento character varying(255) COLLATE pg_catalog."default",
-	procedimiento_descrip text COLLATE pg_catalog."default",
-	estado character varying(255) COLLATE pg_catalog."default",
-	CONSTRAINT registro_pkey PRIMARY KEY (id)
+CREATE TABLE registro (
+    id SERIAL PRIMARY KEY,
+    id_mascota VARCHAR(255),
+    id_duenio VARCHAR(255),
+    id_veterinario VARCHAR(255),
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    procedimiento VARCHAR(255),
+    procedimiento_descrip TEXT,
+    estado VARCHAR(255)
 );
+
 
 CREATE OR REPLACE TRIGGER trigger_actualizar_fecha
     BEFORE UPDATE 
