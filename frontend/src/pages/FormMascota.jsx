@@ -177,7 +177,7 @@ function FormMascota() {
               {...register("tipo", { required: true })}
               defaultValue="value1"
             >
-              {pets.map((pet) => (
+              {pets_types.map((pet) => (
                 <option key={pet.tipo} value={pet.tipo}>
                   {pet.tipo}
                 </option>
