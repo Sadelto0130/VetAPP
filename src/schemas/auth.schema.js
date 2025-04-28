@@ -4,11 +4,11 @@ export const registrarseSchema = z.object({
   nombre: z.string({
     required_error: 'El nombre es obligatorio',
     invalid_type_error: 'El nombre debe ser un texto'
-  }).min(1).max(255),
+  }),
   apellido: z.string({
     required_error: 'El apellido es obligatorio',
     invalid_type_error: 'El apellido debe ser un texto'
-  }).min(1).max(255),
+  }),
   email: z.string({
     required_error: 'El email es obligatorio'
   }).email({

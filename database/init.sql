@@ -3,7 +3,9 @@ create table users(
 	nombre varchar(30) not null,
 	apellido varchar(50) not null,
 	email varchar(30),
-	pass varchar(8) not null,
+	password varchar(8) not null,
+	tipousuario varchar(30) not null,
+	estado varchar(30) not null,
 	primary key(idDuenio)
 );
 
