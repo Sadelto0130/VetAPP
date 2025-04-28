@@ -96,7 +96,6 @@ function FormMascota() {
         setValue("tipo", pet.tipo);
         setValue("peso", pet.peso);
         setValue("fecha_nacimiento", formatoInputDate);
-        setValue("foto", pet.foto);
       });
     }
   }, []);
