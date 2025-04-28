@@ -9,13 +9,13 @@ import mascotaRoutes from "./routes/pet.routes.js";
 import veterinarioRoutes from "./routes/vet.routes.js";
 import clinicRoutes from "./routes/clinic.routes.js"
 import { pool } from "./db.js";
-import { ORIGIN_CORS } from "./config.js";
+import { ORIGIN } from "./config.js";
 
 //Configuracion de express
 const app = express();
 
 app.use(cors({
-  origin: ORIGIN_CORS,
+  origin: ORIGIN,
   credentials: true
 }))
 
