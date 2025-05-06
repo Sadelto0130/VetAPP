@@ -140,7 +140,7 @@ export const updateRegistro = async (req, res, next) => {
 };
 
 export const getUserRecordsPets = async (req, res, next) => {
-  const id = req.userId;
+  const id = req.params.id; // ID del usuario desde los parámetros de la solicitud
   console.log("ID del usuario:", id); // Verifica el ID del usuario
   try {
     const result = await pool.query(`
