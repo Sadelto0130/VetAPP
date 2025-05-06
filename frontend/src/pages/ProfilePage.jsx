@@ -6,7 +6,7 @@ import { Container } from "../components/ui";
 import { calcularEdad } from "../lib/funciones";
 
 function ProfilePage() {
-  const { user, registros, getUserRecords } = useAuth();
+  const { user, registros, errors, getUserRecords } = useAuth();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -83,7 +83,7 @@ function ProfilePage() {
                   <h3 className="font-medium text-gray-900 text-left pb-2 text-lg sm:text-xl">
                     REGISTROS RECIENTES
                   </h3>
-                  {registros.slice(0, 5).map((registro) => (
+                  {errors !== null ? ( registros.slice(0, 5).map((registro) => (
                     <Link
                       to=""
                       key={registro.registro_id}
@@ -120,7 +120,11 @@ function ProfilePage() {
                         </span>
                       </div>
                     </Link>
-                  ))}
+                  ))) : (
+                    <p className="text-red-500 text-center mt-2 mb-1">
+                      No tienes registros de mascotas
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

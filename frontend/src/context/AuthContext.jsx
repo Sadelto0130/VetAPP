@@ -67,8 +67,12 @@ export function AuthProvider({ children }) {
   const getUserRecords = async () => {
     try {
       const res = await axios.get(`/registros_user/${user.id}`)
-      setRegistros(Array.isArray(res.data.registro) ? res.data.registro : []);
-      return res.data.registro
+      if(res.data.registro.length === 0) {
+        setErrors(["No tienes registros de mascotas"]);
+      } else {
+        setRegistros(Array.isArray(res.data.registro) ? res.data.registro : []);
+      }
+      //return res.data.registro
     } catch (error) {
       console.log(error);
       if (Array.isArray(error.response.data)) {
