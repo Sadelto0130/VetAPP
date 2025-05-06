@@ -27,7 +27,6 @@ export function AuthProvider({ children }) {
   const sign = async (data) => {
     try {
       const res = await axios.post("/signin", data);
-      console.log(res.data);
       setUser(res.data);
       setIsAuth(true);
 
@@ -66,6 +65,7 @@ export function AuthProvider({ children }) {
 
   const getUserRecords = async () => {
     try {
+      console.log(user.id)
       const res = await axios.get(`/registros_user/${user.id}`)
       if(res.data.registro.length === 0) {
         setErrors(["No tienes registros de mascotas"]);
@@ -74,7 +74,6 @@ export function AuthProvider({ children }) {
       }
       //return res.data.registro
     } catch (error) {
-      console.log(error);
       if (Array.isArray(error.response.data)) {
         return setErrors(error.response.data);
       }

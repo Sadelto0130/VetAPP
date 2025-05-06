@@ -24,7 +24,6 @@ function EditRecord() {
   } = useForm();
 
   useEffect(() => {
-    console.log("pathname actual:", location.pathname);
     if (location.pathname.includes("edit_record")) {
       console.log("edit");
     }
@@ -32,7 +31,6 @@ function EditRecord() {
 
   return (
     <Container className="flex items-center justify-center relative pt-20 ">
-      {console.log(location.pathname)}
       <Card>
         <Header> CREAR REGISTRO </Header>
 
