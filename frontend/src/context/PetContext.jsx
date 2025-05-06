@@ -9,7 +9,7 @@ import {
   loadRecordById,
   updateRecordPet,
   getRecord,
-  inactiveRecord
+  inactiveRecord,
 } from "../api/pets.api";
 
 const PetContext = createContext();
@@ -29,7 +29,7 @@ export const PetProvider = ({ children }) => {
 
   const createPetsFront = async (pet) => {
     const res = await createPets(pet);
-    setPets([...pets, res.data]);
+    setPets((prev) => [...prev, res.data]);
   };
 
   const loadPets = async () => {
@@ -54,7 +54,8 @@ export const PetProvider = ({ children }) => {
       const res = await updatePet(id, pet, config);
       return res.data;
     } catch (error) {
-      setErrors([error.response?.data?.message || console.error(error)]);
+      setErrors([error.response?.data?.message || error.message]);
+      console.error(error);
     }
   };
 
@@ -67,36 +68,39 @@ export const PetProvider = ({ children }) => {
   const loadRecord = async (id) => {
     const res = await getRecord(id);
     return res.data;
-  }
-
-  const loadRecordPet = async (id) => { 
-    const res = await loadRecordById(id);
-    setRecords(res.registro)
-    return Array.isArray(res.data.registro) ? res.data.registro : [];
   };
 
-  const updateRecordById = async(id, record) => {
-    try {
-      const res = await updateRecordPet(id, record)
-      return res.data
-    } catch (error) {
-      setErrors([error.response.data.message || console.error(error)])
-    }
-  }
+  const loadRecordPet = async (id) => {
+    const res = await loadRecordById(id);
+    const registros = res.data?.registro || [];
+    setRecords(res.registro);
+    return Array.isArray(registros) ? registros : [];
+  };
 
-  const inactiveRecordPet = async(id) => {
+  const updateRecordById = async (id, record) => {
     try {
-      const res = await inactiveRecord(id)
-      return res.data
+      const res = await updateRecordPet(id, record);
+      return res.data;
     } catch (error) {
-      setErrors([error.response.data.message || console.error(error)])
+      setErrors([error.response?.data?.message || error.message]);
+      console.error(error);
     }
-  }
+  };
+
+  const inactiveRecordPet = async (id) => {
+    try {
+      const res = await inactiveRecord(id);
+      return res.data;
+    } catch (error) {
+      setErrors([error.response?.data?.message || error.message]);
+      console.error(error);
+    }
+  };
 
   return (
     <PetContext.Provider
       value={{
-        pets, 
+        pets,
         createPetsFront,
         loadPets,
         deletePets,
