@@ -27,6 +27,7 @@ export function AuthProvider({ children }) {
   const sign = async (data) => {
     try {
       const res = await axios.post("/signin", data);
+      console.log(res.data);
       setUser(res.data);
       setIsAuth(true);
 
