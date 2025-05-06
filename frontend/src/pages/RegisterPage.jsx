@@ -91,7 +91,7 @@ function RegisterPage() {
           {errors.password && (
             <p className="text-red-500 text-right mt-0 mb-1">
               Contraseña es obligatoria
-            </p>
+            </p> 
           )}
 
           <Button> CREAR USUARIO </Button>

@@ -60,6 +60,11 @@ export const register = async (req, res, next) => {
     const hashedPass = await bcrypt.hash(password, 10);
     const gravatar = `https://robohash.org/${nombre}+${apellido}?set=set4`
 
+    if(!tipousuario || !estado) {
+      tipousuario = "usuario";
+      estado = "activo";
+    }
+
     const result = await pool.query(
       "INSERT INTO users(nombre, apellido, email, password, tipousuario, estado, gravatar) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [nombre, apellido, email, hashedPass, tipousuario, estado, gravatar]
@@ -99,7 +104,7 @@ export const logout = (req, res) => {
 };
 
 export const profile = async (req, res) => {
-  const result = await pool.query("SELECT * FROM users WHERE id = $1", [
+  const result = await pool.query("SELECT * FROM users WHERE idduenio = $1", [
     req.userId,
   ]);
   return res.json(result.rows[0]);
