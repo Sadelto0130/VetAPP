@@ -27,7 +27,7 @@ export const PetProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [records, setRecords] = useState([]);
 
-  const createPets = async (pet) => {
+  const createPetsFront = async (pet) => {
     const res = await createPets(pet);
     setPets([...pets, res.data]);
   };
@@ -97,7 +97,7 @@ export const PetProvider = ({ children }) => {
     <PetContext.Provider
       value={{
         pets, 
-        createPets,
+        createPetsFront,
         loadPets,
         deletePets,
         loadPetById,

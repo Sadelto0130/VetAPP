@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 
 function FormMascota() {
   const {
-    createPets,
+    createPetsFront,
     loadPetById,
     updatePetById,
     errors: petErrors,
@@ -49,7 +49,7 @@ function FormMascota() {
         formData.append("foto", data.foto[0]);
       }
       try {
-        pet = await createPets(formData);
+        pet = await createPetsFront(formData);
       } catch (error) {
         console.error("Error al agregar la mascota:", error);
       } finally {
