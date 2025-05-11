@@ -69,7 +69,7 @@ function App() {
               }
             >
               <Route path="/pets" element={<Pets />} />
-              <Route path="/pet/add_Pet" element={<FormMascota />} />
+              <Route path="/pet/add_pet" element={<FormMascota />} />
               <Route path="/pet/records" element={<Registros />} />
               <Route path="/pet/:id/edit_pet" element={<FormMascota />} />
               <Route path="/pet/:id/records" element={<PetRecord />} />
