@@ -36,7 +36,7 @@ export const addPet = async (req, res, next) => {
 
 export const getPets = async (req, res, next) => {
   try {
-    console.log("🧪 req.userId:", req.userId);
+    console.log("req.userId:", req.userId);
     const idduenio = req.userId;
     const result = await pool.query(
       "SELECT * FROM mascotas WHERE idduenio = $1 ORDER BY nombre",
