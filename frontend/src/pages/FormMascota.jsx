@@ -100,8 +100,13 @@ function FormMascota() {
         setValue("fecha_nacimiento", formatoInputDate);
       });
     }
-    console.log(user);
   }, []);
+
+  useEffect(() => {
+    if(user === null) {
+      setLoading(false);
+    }
+  }, [user]);
 
   return (
     <>
