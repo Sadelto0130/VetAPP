@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 import upload from "../libs/multer.js";
 import cloudinary from "../libs/cloudinary.js";
 import {obtenerPublicId} from "../libs/publicID.js"; 
- 
+
 export const addPet = async (req, res, next) => {
 
   try {
@@ -36,13 +36,17 @@ export const addPet = async (req, res, next) => {
 
 export const getPets = async (req, res, next) => {
   try {
+    console.log("🧪 req.userId:", req.userId);
     const idduenio = req.userId;
-    const result = await pool.query("SELECT * FROM mascotas WHERE idduenio = $1  ORDER BY nombre", [idduenio]);
+    const result = await pool.query(
+      "SELECT * FROM mascotas WHERE idduenio = $1 ORDER BY nombre",
+      [idduenio]
+    );
     return res.json(result.rows);
   } catch (error) {
-    return res.status(500).json({ message: "Error al obtener las mascotas" });    
-  }  
-  next(error);
+    console.error("Error en getPets:", error);
+    next(error); // Aquí sí está bien usado
+  }
 };
 
 export const getPet = async (req, res, next) => {

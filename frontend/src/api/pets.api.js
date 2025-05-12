@@ -2,7 +2,7 @@ import axios from "./axios";
 
 export const createPets = (pet) => axios.post("/add_pet", pet)
 
-export const getAllPetsDuenio = () => axios.get("/get_pets", {withCredentials: true})
+export const getAllPetsDuenio = () => axios.get("/get_pets", {withCredentials: true}) 
 
 export const deletePet = (id) => axios.delete(`/delete_pet/${id}`)
 
