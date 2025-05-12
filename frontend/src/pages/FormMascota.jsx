@@ -107,7 +107,7 @@ function FormMascota() {
   }, []);
 
   useEffect(() => {
-    console.log("user", user.id);
+    console.log("user", user);
   }, [user]);
 
   return (
