@@ -10,6 +10,7 @@ import {
 } from "../components/ui";
 import { useForm } from "react-hook-form";
 import { usePets } from "../context/PetContext";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -20,6 +21,7 @@ function FormMascota() {
     updatePetById,
     errors: petErrors,
   } = usePets();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false); 
   const {
     register,
@@ -86,6 +88,7 @@ function FormMascota() {
   });
 
   useEffect(() => {
+    console.log(user);
     if (params.id) {
       loadPetById(params.id).then((pet) => {
         const fecha = new Date(pet.fecha_nacimiento);
