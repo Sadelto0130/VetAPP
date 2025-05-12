@@ -28,8 +28,17 @@ export const PetProvider = ({ children }) => {
   const [records, setRecords] = useState([]);
 
   const createPetsFront = async (pet) => {
-    const res = await createPets(pet);
-    setPets((prev) => [...prev, res.data]);
+    try {
+      const res = await createPets(pet);
+      setPets((prev) => [...prev, res.data]);
+      return res.data;
+    } catch (error) {
+      console.error(
+        "Error en createPetsFront:",
+        error.response?.data || error.message
+      );
+      throw error; // Para que el formulario lo atrape
+    }
   };
 
   const loadPets = async () => {
