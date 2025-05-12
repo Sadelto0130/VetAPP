@@ -51,7 +51,11 @@ function FormMascota() {
         formData.append("foto", data.foto[0]);
       }
       try {      
-        pet = await createPetsFront(formData);
+        pet = await createPetsFront(formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       } catch (error) {
         console.error("Error al agregar la mascota:", error);
       } finally {
@@ -103,9 +107,7 @@ function FormMascota() {
   }, []);
 
   useEffect(() => {
-    if(user === null) {
-      setLoading(false);
-    }
+    console.log("user", user.id);
   }, [user]);
 
   return (
