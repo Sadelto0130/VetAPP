@@ -100,7 +100,7 @@ function FormMascota() {
         setValue("fecha_nacimiento", formatoInputDate);
       });
     }
-    console.log(user.id + " id del dueño de la mascota");
+    console.log(user);
   }, []);
 
   return (
