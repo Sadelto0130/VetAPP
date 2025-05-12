@@ -9,6 +9,8 @@ export const addPet = async (req, res, next) => {
     const { nombre, raza, fecha_nacimiento, tipo, peso, idduenio } = req.body;
     const estado = true; // valor por defecto
 
+    console.log(req.body);
+
     let fotoUrl = null;
     
     if (req.file) {

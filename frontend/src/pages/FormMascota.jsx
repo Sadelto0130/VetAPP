@@ -138,7 +138,7 @@ function FormMascota() {
               </p>
             )}
 
-            <Input type="hidden" {...register("idduenio", {})} />
+            <input type="hidden" {...register("idduenio", {})} />
 
             <Label htmlFor="Raza">Raza</Label>
             <Input
