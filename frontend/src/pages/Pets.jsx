@@ -29,7 +29,7 @@ function Pets() {
       )}
       <Container className="relative z-10">
         <Link
-          to="/add_pet"
+          to="/pet/add_pet"
           className="w-full text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white text-xl mb-8"
         >
           AGREGAR MASCOTA
