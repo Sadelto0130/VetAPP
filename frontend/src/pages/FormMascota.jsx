@@ -43,7 +43,6 @@ function FormMascota() {
       formData.append("raza", data.raza);
       formData.append("tipo_mascota", data.tipo_mascota);
       formData.append("peso", data.peso);
-      formData.append("idduenio", user.id);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
 
       // Validar que haya archivo o Si el usuario cargó una nueva foto, la añadimos
@@ -52,6 +51,7 @@ function FormMascota() {
       }
       try {
         pet = await createPetsFront(formData);
+        pet.id_duenio = user.id; // Asignar el id del dueño a la mascota
       } catch (error) {
         console.error("Error al agregar la mascota:", error);
       } finally {
@@ -63,7 +63,6 @@ function FormMascota() {
       formData.append("raza", data.raza);
       formData.append("tipo_mascota", data.tipo_mascota);
       formData.append("peso", data.peso);
-      formData.append("idduenio", user.id);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
 
       if (data.foto && data.foto.length > 0) {
@@ -75,6 +74,7 @@ function FormMascota() {
             "Content-Type": "multipart/form-data",
           },
         });
+        pet.id_duenio = user.id; // Asignar el id del dueño a la mascota
       } catch (error) {
         console.error("Error al actualizar mascota:", error);
       } finally {
@@ -100,6 +100,7 @@ function FormMascota() {
         setValue("fecha_nacimiento", formatoInputDate);
       });
     }
+    console.log(user.id + " id del dueño de la mascota");
   }, []);
 
   return (
@@ -158,7 +159,7 @@ function FormMascota() {
             />
             {errors.fecha_nacimiento && (
               <p className="text-red-500 text-right mt-0 mb-1">
-                La edad es obligatoria
+                La fecha de nacimiento es obligatoria
               </p>
             )}
 
@@ -171,15 +172,12 @@ function FormMascota() {
             />
             {errors.peso && (
               <p className="text-red-500 text-right mt-0 mb-1">
-                El peso es obligatoria
+                El peso es obligatorio
               </p>
             )}
 
             <Label htmlFor="tipo_mascota">Tipo de Mascota</Label>
-            <Select
-              {...register("tipo_mascota", { required: true })}
-              defaultValue="value1"
-            >
+            <Select {...register("tipo_mascota", { required: true })}>
               <option value="">Selecciona un tipo</option>
               {pets_types.map((pet) => (
                 <option key={pet.tipo} value={pet.tipo}>

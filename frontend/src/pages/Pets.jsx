@@ -29,13 +29,13 @@ function Pets() {
       )}
       <Container className="relative z-10">
         <Link
-          to="/pet/add_pet"
+          to="/add_pet"
           className="w-full text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white text-xl mb-8"
         >
           AGREGAR MASCOTA
         </Link>
         <div
-          className={`grid gap-8 ${
+          className={`grid gap-8 ${ 
             pets.length === 1
               ? "grid-cols-1 place-items-center"
               : "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3"
