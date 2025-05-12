@@ -44,7 +44,7 @@ export const PetProvider = ({ children }) => {
   const loadPets = async () => {
     try {
       const res = await getAllPetsDuenio();
-      setPets(res.data);
+      return setPets(res.data);
     } catch (error) {
       console.error("Error al cargar mascotas:", error);
       setErrors([error.response?.data?.message || error.message]);      
