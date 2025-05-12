@@ -41,9 +41,9 @@ function FormMascota() {
     if (!params.id) {
       formData.append("nombre", data.nombre);
       formData.append("raza", data.raza);
-      formData.append("edad", data.edad);
       formData.append("tipo", data.tipo);
       formData.append("peso", data.peso);
+      formData.append("idduenio", user.id);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
 
       // Validar que haya archivo o Si el usuario cargó una nueva foto, la añadimos
@@ -61,7 +61,6 @@ function FormMascota() {
       // Llenar FormData también para la edición
       formData.append("nombre", data.nombre);
       formData.append("raza", data.raza);
-      formData.append("edad", data.edad);
       formData.append("tipo", data.tipo);
       formData.append("peso", data.peso);
       formData.append("idduenio", user.id);
