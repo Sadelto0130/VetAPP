@@ -52,7 +52,6 @@ function FormMascota() {
       }
       try {      
         pet = await createPetsFront(formData);
-        console.log("Mascota creada:", pet);
       } catch (error) {
         console.error("Error al agregar la mascota:", error);
       } finally {

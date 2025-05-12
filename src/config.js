@@ -6,7 +6,7 @@ export const PG_USER = process.env.PG_USER || "postgres";
 export const PG_PASSWORD = process.env.PG_PASSWORD || "password";
 export const PG_DATABASE = process.env.PG_DATABASE || "veterinaria";
 
-export const ORIGIN = process.env.ORIGIN || "http://localhost:5173"
+export const ORIGIN = process.env.ORIGIN || "https://vetapp.up.railway.app"
 
 export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "dpiubglwk"
 export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || 287286962684634

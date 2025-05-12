@@ -35,9 +35,13 @@ export const addPet = async (req, res, next) => {
 };
 
 export const getPets = async (req, res, next) => {
-  const idduenio = req.userId;
-  const result = await pool.query("SELECT * FROM mascotas WHERE idduenio = $1  ORDER BY nombre", [idduenio]);
-  return res.json(result.rows);
+  try {
+    const idduenio = req.userId;
+    const result = await pool.query("SELECT * FROM mascotas WHERE idduenio = $1  ORDER BY nombre", [idduenio]);
+    return res.json(result.rows);
+  } catch (error) {
+    return res.status(500).json({ message: "Error al obtener las mascotas" });    
+  }  
   next(error);
 };
 

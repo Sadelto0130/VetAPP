@@ -18,4 +18,4 @@ export const updateRecordPet = (id, record) => axios.put(`/actualizar_registro/$
 
 export const getRecord = (id) => axios.get(`/registro/${id}`)  
 
-export const inactiveRecord = (id) => axios.put(`/borrar_registro/${id}`)
+export const inactiveRecord = (id) => axios.put(`/borrar_registro/${id}`) 

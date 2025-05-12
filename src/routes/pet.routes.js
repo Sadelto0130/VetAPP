@@ -7,7 +7,7 @@ const router = Router();
 
 router.post('/add_pet', isAuth, upload.single("foto"), addPet);
 
-router.get('/get_pets', isAuth, getPets);
+router.get('/get_pets', isAuth, getPets); 
 
 router.get('/get_pet/:id', isAuth, getPet) 
 
