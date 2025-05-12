@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 import upload from "../libs/multer.js";
 import cloudinary from "../libs/cloudinary.js";
 import {obtenerPublicId} from "../libs/publicID.js"; 
-
+ 
 export const addPet = async (req, res, next) => {
 
   try {
