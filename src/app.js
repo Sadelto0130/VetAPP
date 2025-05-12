@@ -22,7 +22,7 @@ app.use(cors({
 app.use(morgan("dev"));
 app.use(cookieParser()); // lee las cookies que se envian desde el frontend
 app.use(express.json()); // convierte todo lo que llega en json a javascript
-app.use(express.urlencoded({ extended: false })); // permite enviar formularios desde el frontend
+//app.use(express.urlencoded({ extended: true })); // permite enviar formularios desde el frontend
 
 app.get("/", (req, res) => res.json({ message: "Bienvenidos pagina vet" }));
 app.get("/api/ping", async (req, res) => {
