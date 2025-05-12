@@ -41,7 +41,7 @@ function FormMascota() {
     if (!params.id) {
       formData.append("nombre", data.nombre);
       formData.append("raza", data.raza);
-      formData.append("tipo", data.tipo);
+      formData.append("tipo_mascota", data.tipo_mascota);
       formData.append("peso", data.peso);
       formData.append("idduenio", user.id);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
@@ -61,7 +61,7 @@ function FormMascota() {
       // Llenar FormData también para la edición
       formData.append("nombre", data.nombre);
       formData.append("raza", data.raza);
-      formData.append("tipo", data.tipo);
+      formData.append("tipo_mascota", data.tipo_mascota);
       formData.append("peso", data.peso);
       formData.append("idduenio", user.id);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
@@ -92,23 +92,15 @@ function FormMascota() {
       loadPetById(params.id).then((pet) => {
         const fecha = new Date(pet.fecha_nacimiento);
         const formatoInputDate = fecha.toISOString().split("T")[0]; // yyyy-mm-dd
-        setIdduenio(String(user.id)); // Convertir a string
 
         setValue("nombre", pet.nombre);
         setValue("raza", pet.raza);
-        setValue("tipo", pet.tipo);
+        setValue("tipo_mascota", pet.tipo_mascota);
         setValue("peso", pet.peso);
         setValue("fecha_nacimiento", formatoInputDate);
       });
     }
   }, []);
-
-  useEffect(() => {
-    if (user?.id) {
-      setValue("idduenio", user.id);
-    }
-  }, [user, setValue]);
-  
 
   return (
     <>
@@ -144,9 +136,8 @@ function FormMascota() {
               </p>
             )}
 
-            <input type="hidden" {...register("idduenio", {})} />
 
-            <Label htmlFor="Raza">Raza</Label>
+            <Label htmlFor="raza">Raza</Label>
             <Input
               placeholder="Raza"
               {...register("raza", {
@@ -159,19 +150,19 @@ function FormMascota() {
               </p>
             )}
 
-            <Label htmlFor="Fecha nacimiento">Fecha de Nacimiento</Label>
+            <Label htmlFor="fecha_nacimiento">Fecha de Nacimiento</Label>
             <Input
               type="date"
               placeholder="Fecha de nacimiento"
               {...register("fecha_nacimiento", { required: true })}
             />
-            {errors.edad && (
+            {errors.fecha_nacimiento && (
               <p className="text-red-500 text-right mt-0 mb-1">
-                La edaad es obligatoria
+                La edad es obligatoria
               </p>
             )}
 
-            <Label htmlFor="Peso">Peso</Label>
+            <Label htmlFor="peso">Peso</Label>
             <Input
               placeholder="Peso"
               {...register("peso", {
@@ -184,11 +175,12 @@ function FormMascota() {
               </p>
             )}
 
-            <Label htmlFor="Tipo mascota">Tipo de Mascota</Label>
+            <Label htmlFor="tipo_mascota">Tipo de Mascota</Label>
             <Select
-              {...register("tipo", { required: true })}
+              {...register("tipo_mascota", { required: true })}
               defaultValue="value1"
             >
+              <option value="">Selecciona un tipo</option>
               {pets_types.map((pet) => (
                 <option key={pet.tipo} value={pet.tipo}>
                   {pet.tipo}

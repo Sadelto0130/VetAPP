@@ -21,7 +21,7 @@ export const addPet = async (req, res, next) => {
     }
 
     const result = await pool.query(
-      "INSERT INTO mascotas (nombre, foto, raza, tipo,  idduenio, peso, estado, fecha_nacimiento) VALUES ($1, $2, $3, $4, $5, $6, $7, TO_DATE($8, 'YYYY-MM-DD')) RETURNING *",
+      "INSERT INTO mascotas (nombre, foto, raza, tipo_mascota,  idduenio, peso, estado, fecha_nacimiento) VALUES ($1, $2, $3, $4, $5, $6, $7, TO_DATE($8, 'YYYY-MM-DD')) RETURNING *",
       [nombre, fotoUrl, raza, tipo,  idduenio, peso, estado, fecha_nacimiento]
     );
 
