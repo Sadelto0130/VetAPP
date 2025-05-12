@@ -23,6 +23,7 @@ function FormMascota() {
   } = usePets();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [idduenio, setIdduenio] = useState(user.id); // Estado para idduenio
   const {
     register,
     handleSubmit,
@@ -43,7 +44,7 @@ function FormMascota() {
       formData.append("raza", data.raza);
       formData.append("tipo", data.tipo);
       formData.append("peso", data.peso);
-      formData.append("idduenio", user.id);
+      formData.append("idduenio", idduenio);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
 
       // Validar que haya archivo o Si el usuario cargó una nueva foto, la añadimos
@@ -63,7 +64,7 @@ function FormMascota() {
       formData.append("raza", data.raza);
       formData.append("tipo", data.tipo);
       formData.append("peso", data.peso);
-      formData.append("idduenio", user.id);
+      formData.append("idduenio", idduenio);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
 
       if (data.foto && data.foto.length > 0) {
@@ -92,15 +93,17 @@ function FormMascota() {
       loadPetById(params.id).then((pet) => {
         const fecha = new Date(pet.fecha_nacimiento);
         const formatoInputDate = fecha.toISOString().split("T")[0]; // yyyy-mm-dd
+        setIdduenio(String(user.id)); // Convertir a string
 
         setValue("nombre", pet.nombre);
         setValue("raza", pet.raza);
         setValue("tipo", pet.tipo);
         setValue("peso", pet.peso);
-        setValue("idduenio", user.id);
+        setValue("idduenio", idduenio);
         setValue("fecha_nacimiento", formatoInputDate);
       });
     }
+    console.log("ID dueño:", idduenio); // Verificar el valor de idduenio
   }, []);
 
   return (
