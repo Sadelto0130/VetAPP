@@ -44,14 +44,17 @@ function FormMascota() {
       formData.append("tipo_mascota", data.tipo_mascota);
       formData.append("peso", data.peso);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
+      formData.append("idduenio", user.id); // Asignar el id del dueño a la mascota
 
       // Validar que haya archivo o Si el usuario cargó una nueva foto, la añadimos
       if (data.foto && data.foto.length > 0) {
         formData.append("foto", data.foto[0]);
       }
       try {
+        for (const pair of formData.entries()) {
+          console.log(pair[0], pair[1]);
+        }        
         pet = await createPetsFront(formData);
-        pet.id_duenio = user.id; // Asignar el id del dueño a la mascota
       } catch (error) {
         console.error("Error al agregar la mascota:", error);
       } finally {
@@ -64,6 +67,7 @@ function FormMascota() {
       formData.append("tipo_mascota", data.tipo_mascota);
       formData.append("peso", data.peso);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
+      formData.append("idduenio", user.id); // Asignar el id del dueño a la mascota
 
       if (data.foto && data.foto.length > 0) {
         formData.append("foto", data.foto[0]); // Si se seleccionó nueva imagen
@@ -74,7 +78,6 @@ function FormMascota() {
             "Content-Type": "multipart/form-data",
           },
         });
-        pet.id_duenio = user.id; // Asignar el id del dueño a la mascota
       } catch (error) {
         console.error("Error al actualizar mascota:", error);
       } finally {
