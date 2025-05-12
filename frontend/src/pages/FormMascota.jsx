@@ -106,6 +106,7 @@ function FormMascota() {
     if(user === null) {
       setLoading(false);
     }
+    console.log(user);
   }, [user]);
 
   return (
