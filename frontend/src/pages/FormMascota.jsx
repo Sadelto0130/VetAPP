@@ -22,7 +22,7 @@ function FormMascota() {
     errors: petErrors,
   } = usePets();
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -64,6 +64,7 @@ function FormMascota() {
       formData.append("edad", data.edad);
       formData.append("tipo", data.tipo);
       formData.append("peso", data.peso);
+      formData.append("idduenio", user.id);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
 
       if (data.foto && data.foto.length > 0) {
@@ -88,7 +89,6 @@ function FormMascota() {
   });
 
   useEffect(() => {
-    console.log(user);
     if (params.id) {
       loadPetById(params.id).then((pet) => {
         const fecha = new Date(pet.fecha_nacimiento);
@@ -98,6 +98,7 @@ function FormMascota() {
         setValue("raza", pet.raza);
         setValue("tipo", pet.tipo);
         setValue("peso", pet.peso);
+        setValue("idduenio", user.id);
         setValue("fecha_nacimiento", formatoInputDate);
       });
     }
@@ -111,14 +112,15 @@ function FormMascota() {
         </div>
       )}
 
-      <Container        
-        className="h-[calc(100vh-3rem)] flex items-center justify-center relative mt-10"
-      >
+      <Container className="h-[calc(100vh-3rem)] flex items-center justify-center relative mt-10">
         <Card>
           <Header> {params.id ? "EDITAR MASCOTA" : "AGREGAR MASCOTA"} </Header>
           {petErrors &&
             petErrors.map((err, index) => (
-              <p key={index} className="text-white text-center bg-red-500 rounded-md p-2">
+              <p
+                key={index}
+                className="text-white text-center bg-red-500 rounded-md p-2"
+              >
                 {err}
               </p>
             ))}
@@ -135,6 +137,8 @@ function FormMascota() {
                 Nombre es obligatorio
               </p>
             )}
+
+            <Input type="hidden" {...register("idduenio", {})} />
 
             <Label htmlFor="Raza">Raza</Label>
             <Input

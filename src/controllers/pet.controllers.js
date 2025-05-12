@@ -6,13 +6,11 @@ import {obtenerPublicId} from "../libs/publicID.js";
 export const addPet = async (req, res, next) => {
 
   try {
-    const { nombre, raza, fecha_nacimiento, tipo, peso } = req.body;
-    const idduenio = req.userId;
+    const { nombre, raza, fecha_nacimiento, tipo, peso, idduenio } = req.body;
     const estado = true; // valor por defecto
 
     let fotoUrl = null;
     
-
     if (req.file) {
       const uploadResult = await cloudinary.uploader.upload(req.file.path, {
         folder: "veterinaria",
