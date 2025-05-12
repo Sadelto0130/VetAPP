@@ -44,7 +44,7 @@ function FormMascota() {
       formData.append("tipo_mascota", data.tipo_mascota);
       formData.append("peso", data.peso);
       formData.append("fecha_nacimiento", data.fecha_nacimiento);
-      formData.append("idduenio", user.id); // Asignar el id del dueño a la mascota
+      formData.append("idduenio", "1"); // Asignar el id del dueño a la mascota
 
       // Validar que haya archivo o Si el usuario cargó una nueva foto, la añadimos
       if (data.foto && data.foto.length > 0) {
