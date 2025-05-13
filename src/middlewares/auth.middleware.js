@@ -16,8 +16,9 @@ export const isAuth = (req, res, next) => {
         message: 'No estas autorizado'
       }); 
     }
+    console.log("🎯 Token decodificado:", decoded); // <---- esto
 
-    req.userId = decoded.idduenio;
+    req.userId = decoded.id;
     req.nombre = decoded.nombre;
     req.tipousuario = decoded.tipousuario;
 
