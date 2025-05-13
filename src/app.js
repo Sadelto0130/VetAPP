@@ -19,6 +19,12 @@ app.use(cors({
   credentials: true
 }))
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://vetapp.up.railway.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 app.use(morgan("dev"));
 app.use(cookieParser()); // lee las cookies que se envian desde el frontend
 app.use(express.json()); // convierte todo lo que llega en json a javascript
