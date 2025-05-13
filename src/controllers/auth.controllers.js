@@ -29,7 +29,7 @@ export const signin = async (req, res) => {
     }
 
     const token = await createAcessToken({
-      id: result.rows[0].id,
+      idduenio: result.rows[0].idduenio,
       nombre: result.rows[0].nombre,
       tipousuario: result.rows[0].tipousuario,
     });
