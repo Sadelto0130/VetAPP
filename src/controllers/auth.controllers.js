@@ -72,7 +72,7 @@ export const register = async (req, res, next) => {
     );
 
     const token = await createAcessToken({
-      id: result.rows[0].id,
+      idduenio: result.rows[0].idduenio,
       nombre: result.rows[0].nombre,
       tipousuario: result.rows[0].tipousuario,
     });
@@ -80,7 +80,7 @@ export const register = async (req, res, next) => {
     // Se crea la cookie con el token
     res.cookie("token", token, {
       sameSite: "none",
-      // httpOnly: true,
+      httpOnly: true,
       secure: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
