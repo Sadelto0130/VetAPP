@@ -7,7 +7,7 @@ import Table from "../components/Table";
 function PetProfile() {
   const { loadPetById, loadRecordPet} = usePets();
   const params = useParams();
-  const [petData, setPetData] = useState({});
+  const [petData, setPetData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([])
 
@@ -16,28 +16,32 @@ function PetProfile() {
       try {
         const data = await loadPetById(params.id);
         setPetData(data);
-        setLoading(false);
       } catch (error) {
         console.log(error);
+        setPetData(null);
+      } finally {
+        setLoading(false);
       }
     };
     pet();
-  }, []);
+  }, [params.id, loadPetById]);
 
   useEffect(() => {
-    const pet = async () => {
+    const petRecords = async () => {
       try {
         const data = await loadRecordPet(params.id);
-        setRecords(data)
-        setLoading(false);
+        setRecords(Array.isArray(data) ? data : []);
       } catch (error) {
         console.log(error);
+        setRecords([]);
+      } finally {
+        setLoading(false);
       }
     };
-    pet();
-  }, []);
+    petRecords();
+  }, [params.id, loadRecordPet]);
 
-  if (loading) {
+  if (loading || !petData) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white border-solid"></div>
@@ -55,7 +59,7 @@ function PetProfile() {
               <div className="mb-3">
                 <img
                   src={petData.foto}
-                  alt={petData.nombre.toUpperCase()}
+                  alt={petData.nombre?.toUpperCase()}
                   className="w-full max-h-[450px] object-cover rounded  "
                 />
               </div>
