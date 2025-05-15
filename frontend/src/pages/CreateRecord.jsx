@@ -107,7 +107,7 @@ function CreateRecord() {
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white"></div>
         </div>
       )}
-      <Container className="flex items-center justify-center relative pt-20 ">
+      <div className="flex items-center justify-center relative pt-20 ">
         <Card>
           <Header> {edit ? "EDITAR REGISTRO" : "CREAR REGISTRO"} </Header>
 
@@ -133,7 +133,7 @@ function CreateRecord() {
             <Button>{edit ? "EDITAR REGISTRO" : "CREAR REGISTRO"}</Button>
           </form>
         </Card>
-      </Container>
+      </div>
     </>
   );
 }
