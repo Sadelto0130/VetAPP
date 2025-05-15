@@ -60,9 +60,9 @@ export const getRegistro = async (req, res) => {
 
 export const createRegistro = async (req, res, next) => {
   try {
-    const { procedimiento, procedimiento_descrip, id_mascota, estado } =
+    console.log("body registro", req.body);
+    const { procedimiento, procedimiento_descrip, id_mascota, estado, id_duenio } =
       req.body;
-    const id_duenio = req.userId;
 
     // db insert
     const existeMascota = await pool.query(

@@ -23,7 +23,7 @@ router.get("/registros_user/:id", isAuth, getUserRecordsPets);
 
 router.get("/registros_mascota/:id", isAuth, getAllRegistroPet);
 
-router.post("/crear_registro", isAuth, validateSchema(crearRegistro), createRegistro);
+router.post("/crear_registro", isAuth, validateSchema(crearRegistro), createRegistro); 
 
 router.put("/actualizar_registro/:id", isAuth, /* tipoUsuarioVet, */ validateSchema(actualizarRegistro), updateRegistro);
 
