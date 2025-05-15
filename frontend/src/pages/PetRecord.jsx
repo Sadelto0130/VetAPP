@@ -3,9 +3,11 @@ import { usePets } from "../context/PetContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui";
+import { useAuth } from "../context/AuthContext";
 
 function PetRecord() {
   const { loadPetById, loadRecordPet } = usePets();
+  const { user } = useAuth();
   const [pet, setPet] = useState(null);
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,6 +16,10 @@ function PetRecord() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!user) {
+        navigate("/login");
+      }
+      
     const getData = async () => {
       try {
         const dataPet = await loadPetById(params.id);
@@ -38,7 +44,7 @@ function PetRecord() {
       } finally {
         setLoading(false);
       }
-    };
+    };    
 
     getData();
   }, [params.id, loadPetById, loadRecordPet, navigate]);

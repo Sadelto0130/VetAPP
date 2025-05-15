@@ -24,7 +24,7 @@ function CreateRecord() {
   const param = useParams();
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
-  const [petId, setPetId] = useState(null)
+  const [petId, setPetId] = useState(null);
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -42,7 +42,7 @@ function CreateRecord() {
     const formData = new FormData();
     let recordSend = {};
 
-    if (!edit) {      
+    if (!edit) {
       const payload = {
         procedimiento: data.procedimiento,
         procedimiento_descrip: data.procedimiento_descrip,
@@ -57,7 +57,7 @@ function CreateRecord() {
         console.error("Error al crear el registro:", error);
       } finally {
         setLoading(false);
-        navigate(`/pet/${param.id}/records`); 
+        navigate(`/pet/${param.id}/records`);
       }
     } else {
       const payload = {
@@ -70,27 +70,33 @@ function CreateRecord() {
       };
 
       try {
-        recordSend = await updateRecordById(param.id, payload)        
+        recordSend = await updateRecordById(param.id, payload);
       } catch (error) {
         console.error("Error al actualizar mascota:", error);
       } finally {
         setLoading(false);
-        navigate(`/pet/${param.id}/profile`); 
+        navigate(`/pet/${param.id}/profile`);
       }
     }
   });
 
   useEffect(() => {
-    console.log(param.id)
+    if (!user) {
+      navigate("/login");
+    }
+
     if (location.pathname.includes("/edit_record/")) {
       setEdit(true);
       loadRecord(param.id).then((record) => {
-        setPetId(record.id_mascota)
+        setPetId(record.id_mascota);
         setValue("procedimiento", record.procedimiento);
         setValue("procedimiento_descrip", record.procedimiento_descrip);
         setValue("estado", record.estado); // permitir modificar estado
-        setValue("id_veterinario", record.id_veterinario)
+        setValue("id_veterinario", record.id_veterinario);
       });
+    }
+    if (!user) {
+      navigate("/login");
     }
   }, []);
 
@@ -123,7 +129,7 @@ function CreateRecord() {
               })}
             ></textarea>
             <input type="hidden" {...register("id_veterinario")} />
-            
+
             <Button>{edit ? "EDITAR REGISTRO" : "CREAR REGISTRO"}</Button>
           </form>
         </Card>

@@ -2,10 +2,19 @@
   import { Link, useNavigate } from "react-router-dom";
   import { usePets } from "../../context/PetContext";
   import { calcularEdad } from "../../lib/funciones";
+import { useAuth } from "../../context/AuthContext";
+import { useEffect } from "react";
 
   function PetCard({ pet }) {
     const navigate = useNavigate();
     const { deletePets } = usePets(); 
+    const { user } = useAuth();
+
+    useEffect(() => {
+      if (!user) {
+        navigate("/login");
+      }
+    }, [user, navigate]);
 
     return (
       <div className="p-3 flex flex-col gap-4">
