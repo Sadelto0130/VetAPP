@@ -23,9 +23,17 @@ import PetProfile from "./pages/PetProfile";
 import { useState } from "react";
 
 function App() {
-  const { isAuth, loading } = useAuth();  
-  const location = useLocation()
+  const { isAuth, loading } = useAuth();
+  const location = useLocation();
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white"></div>
+      </div>
+    );
+  }
+  // Si el usuario no está autenticado y la ruta es "/profile", redirigir a "/"
   return (
     <>
       {/* Aplica el fondo solo si la ruta no es "/" (homepage) */}
@@ -47,18 +55,14 @@ function App() {
       <Container className="py-6">
         <Routes>
           <Route
-            element={
-              <ProtectedRoute isAllowed={!isAuth} registerTo="/pets" />
-            }
+            element={<ProtectedRoute isAllowed={!isAuth} registerTo="/pets" />}
           >
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Route>
 
-          <Route
-            element={<ProtectedRoute isAllowed={isAuth} registerTo="/" />}
-          >
+          <Route element={<ProtectedRoute isAllowed={isAuth} registerTo="/" />}>
             <Route path="/profile" element={<ProfilePage />} />
 
             <Route

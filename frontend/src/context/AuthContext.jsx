@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
   const [errors, setErrors] = useState(null);
   const [registros, setRegistros] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const sign = async (data) => {
     try {
@@ -56,17 +56,17 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = async() => {
+  const logout = async () => {
     await axios.post("/logout");
     setUser(null);
-    setIsAuth(false); 
-    navigate("/")
-  }
+    setIsAuth(false);
+    navigate("/");
+  };
 
   const getUserRecords = async () => {
     try {
-      const res = await axios.get(`/registros_user/${user.idduenio}`)
-      if(res.data.registro.length === 0) {
+      const res = await axios.get(`/registros_user/${user.idduenio}`);
+      if (res.data.registro.length === 0) {
         setErrors(["No tienes registros de mascotas"]);
         setRegistros([]);
       } else {
@@ -77,28 +77,29 @@ export function AuthProvider({ children }) {
       if (Array.isArray(error.response.data)) {
         return setErrors(error.response.data);
       } else {
-         setErrors([error.response.data.message]);
+        setErrors([error.response.data.message]);
       }
       setRegistros([]);
     }
-  }
+  };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     if (Cookie.get("token")) {
-      setLoading(true);
       axios
         .get("/profile")
         .then((res) => {
           setUser(res.data);
           setIsAuth(true);
-          setLoading(false)
+          setLoading(false);
         })
         .catch((err) => {
           setUser(null);
           setIsAuth(false);
-          setLoading(false)
+          setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -113,7 +114,7 @@ export function AuthProvider({ children }) {
         loading,
         sign,
         registerUser,
-        logout
+        logout,
       }}
     >
       {children}
