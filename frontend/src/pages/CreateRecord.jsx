@@ -48,7 +48,7 @@ function CreateRecord() {
         procedimiento_descrip: data.procedimiento_descrip,
         estado: "Pendiente",
         id_veterinario: data.id_veterinario,
-        id_duenio: user.idduenio,
+        id_duenio: String(user.idduenio),
         id_mascota: param.id,
       };
       console.log("payload:", payload)
