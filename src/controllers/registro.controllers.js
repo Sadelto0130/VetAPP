@@ -82,6 +82,8 @@ export const createRegistro = async (req, res, next) => {
       [id_mascota, id_duenio, procedimiento, procedimiento_descrip, estado]
     );
 
+    console.log("Registro creado:", result.rows[0]);
+
     return res.json({
       message: "Registro Agregado",
       registro: result.rows[0],
