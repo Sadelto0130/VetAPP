@@ -69,30 +69,12 @@ function PetRecord() {
                   <span></span>
                 </p>
                 <div className="my-5 px-6">
-                  {Array.isArray(records) &&
-                    records.slice(0, 5).map((record) => (
-                      <Link
-                        to="/pets"
-                        key={record.id}
-                        className="bg-white border border-gray-200 rounded-2xl shadow-sm p-2 mb-2 hover:shadow-md transition-shadow duration-200 block"
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h4 className="font-bold text-gray-900 text-lg uppercase">
-                              {record.procedimiento}
-                            </h4>
-                            <p className="text-gray-600 text-xs mt-1 uppercase">
-                              {record.procedimiento_descrip}
-                            </p>
-                          </div>
-                          <span className="text-sm text-gray-400">
-                            {new Date(
-                              record.fecha_creacion
-                            ).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </Link>
-                    ))}
+                  <Link
+                    to={`/pet/${pet.id}/create_record`}
+                    className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white text-xl"
+                  >
+                    CREAR REGISTRO
+                  </Link>
                 </div>
                 {/* <div className="flex justify-between items-center my-5 px-6">
                   <a
