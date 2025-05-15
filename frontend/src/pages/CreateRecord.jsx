@@ -43,6 +43,7 @@ function CreateRecord() {
     let recordSend = {};
 
     if (!edit) {
+      console.log("payload:", data)
       const payload = {
         procedimiento: data.procedimiento,
         procedimiento_descrip: data.procedimiento_descrip,
@@ -63,7 +64,9 @@ function CreateRecord() {
         procedimiento: data.procedimiento,
         procedimiento_descrip: data.procedimiento_descrip,
         estado: data.estado,
-        id_veterinario: data.id_veterinario
+        id_veterinario: data.id_veterinario,
+        id_duenio: user.idduenio,
+        id_mascota: petId,
       };
 
       try {
