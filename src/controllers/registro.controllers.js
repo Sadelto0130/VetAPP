@@ -66,7 +66,7 @@ export const createRegistro = async (req, res, next) => {
 
     // db insert
     const existeMascota = await pool.query(
-      "SELECT * FROM mascotas WHERE id = $1 AND estado = 'inactivo'",
+      "SELECT * FROM mascotas WHERE id = $1",
       [id_mascota]
     );
 

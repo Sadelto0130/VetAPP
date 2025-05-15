@@ -14,7 +14,7 @@ function PetRecord() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getDataPet = async () => {
+    const getData = async () => {
       try {
         const dataPet = await loadPetById(params.id);
 
@@ -23,40 +23,29 @@ function PetRecord() {
           return;
         }
         setPet(dataPet);
-      } catch (error) {
-        console.error("Error cargando datos de la mascota:", error);
-        navigate("/pets");
-      } finally {
-        setLoading(false);
-      }
-    };
-    getDataPet();
-  }, [params.id, loadPetById, navigate]); 
 
-  useEffect(() => {
-    const getDataRecord = async () => {
-      try {
         const dataRecord = await loadRecordPet(params.id);
 
         if (!dataRecord || !Array.isArray(dataRecord)) {
           console.warn("Registros vacíos o inválidos");
           setRecords([]);
-          return; 
+        } else {
+          setRecords(dataRecord);
         }
-        setRecords(dataRecord);
       } catch (error) {
-        console.error("Error cargando datos de los registros:", error);
+        console.error("Error cargando datos:", error);
         navigate("/pets");
       } finally {
         setLoading(false);
       }
     };
-    getDataRecord();
-  }, [params.id, loadRecordPet, navigate]);
+
+    getData();
+  }, [params.id, loadPetById, loadRecordPet, navigate]);
 
   return (
     <>
-      {loading ? (
+      {loading || !pet ? (
         <div className="flex justify-center items-center h-screen">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -74,18 +63,36 @@ function PetRecord() {
 
               <div className="mt-32 pb-2">
                 <h1 className="font-bold text-center text-3xl text-gray-900 uppercase">
-                  {pet.nombre}
+                  {pet?.nombre}
                 </h1>
                 <p>
                   <span></span>
                 </p>
                 <div className="my-5 px-6">
-                  <Link
-                    to={`/pet/${pet.id}/create_record`}
-                    className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white text-xl"
-                  >
-                    CREAR REGISTRO
-                  </Link>
+                  {Array.isArray(records) &&
+                    records.slice(0, 5).map((record) => (
+                      <Link
+                        to="/pets"
+                        key={record.id}
+                        className="bg-white border border-gray-200 rounded-2xl shadow-sm p-2 mb-2 hover:shadow-md transition-shadow duration-200 block"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <h4 className="font-bold text-gray-900 text-lg uppercase">
+                              {record.procedimiento}
+                            </h4>
+                            <p className="text-gray-600 text-xs mt-1 uppercase">
+                              {record.procedimiento_descrip}
+                            </p>
+                          </div>
+                          <span className="text-sm text-gray-400">
+                            {new Date(
+                              record.fecha_creacion
+                            ).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
                 </div>
                 {/* <div className="flex justify-between items-center my-5 px-6">
                   <a
@@ -115,26 +122,25 @@ function PetRecord() {
 
                   {records.slice(0, 5).map((record) => (
                     <Link
-                    to="/pets"
-                    key={record.id}
-                    className="bg-white border border-gray-200 rounded-2xl shadow-sm p-2 mb-2 hover:shadow-md transition-shadow duration-200 block"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h4 className="font-bold text-gray-900 text-lg uppercase">
-                          {record.procedimiento} 
-                        </h4>
-                        <p className="text-gray-600 text-xs mt-1 uppercase">
-                          {record.procedimiento_descrip}
-                        </p>
+                      to="/pets"
+                      key={record.id}
+                      className="bg-white border border-gray-200 rounded-2xl shadow-sm p-2 mb-2 hover:shadow-md transition-shadow duration-200 block"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-bold text-gray-900 text-lg uppercase">
+                            {record.procedimiento}
+                          </h4>
+                          <p className="text-gray-600 text-xs mt-1 uppercase">
+                            {record.procedimiento_descrip}
+                          </p>
+                        </div>
+                        <span className="text-sm text-gray-400">
+                          {new Date(record.fecha_creacion).toLocaleDateString()}
+                        </span>
                       </div>
-                      <span className="text-sm text-gray-400">
-                        {new Date(record.fecha_creacion).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </Link>
+                    </Link>
                   ))}
-
                 </div>
               </div>
             </div>
