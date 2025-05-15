@@ -87,7 +87,7 @@ function ProfilePage() {
                 <h3 className="font-medium text-gray-900 text-left pb-2 text-lg sm:text-xl">
                   REGISTROS RECIENTES
                 </h3>
-                {errors !== null ? (
+                {errors !== null && registros.length > 0 ? (
                   registros.slice(0, 5).map((registro) => (
                     <Link
                       to=""
@@ -128,7 +128,7 @@ function ProfilePage() {
                   ))
                 ) : (
                   <p className="text-red-500 text-center mt-2 mb-1">
-                    No tienes registros de mascotas
+                    {errors ? errors[0] : "No tienes registros de mascotas"}
                   </p>
                 )}
               </div>

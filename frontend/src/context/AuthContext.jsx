@@ -68,15 +68,18 @@ export function AuthProvider({ children }) {
       const res = await axios.get(`/registros_user/${user.idduenio}`)
       if(res.data.registro.length === 0) {
         setErrors(["No tienes registros de mascotas"]);
+        setRegistros([]);
       } else {
         setRegistros(Array.isArray(res.data.registro) ? res.data.registro : []);
+        setErrors(null);
       }
-      //return res.data.registro
     } catch (error) {
       if (Array.isArray(error.response.data)) {
         return setErrors(error.response.data);
+      } else {
+         setErrors([error.response.data.message]);
       }
-      setErrors([error.response.data.message]);
+      setRegistros([]);
     }
   }
 
