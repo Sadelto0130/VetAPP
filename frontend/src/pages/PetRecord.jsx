@@ -41,7 +41,7 @@ function PetRecord() {
         if (!dataRecord || !Array.isArray(dataRecord)) {
           console.warn("Registros vacíos o inválidos");
           setRecords([]);
-          return;
+          return; 
         }
         setRecords(dataRecord);
       } catch (error) {

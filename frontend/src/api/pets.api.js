@@ -2,7 +2,7 @@ import client from "./axios.js"
 
 export const createPets = (pet) => client.post("/add_pet", pet) 
 
-export const getAllPetsDuenio = () => client.get("/get_pets", {withCredentials: true}) 
+export const getAllPetsDuenio = () => client.get("/get_pets") 
 
 export const deletePet = (id) => client.delete(`/delete_pet/${id}`)
 

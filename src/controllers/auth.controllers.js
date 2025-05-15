@@ -32,7 +32,7 @@ export const signin = async (req, res) => {
       idduenio: result.rows[0].idduenio,
       nombre: result.rows[0].nombre,
       tipousuario: result.rows[0].tipousuario,
-    });
+    }); 
 
     res.cookie("token", token, {
       httpOnly: true,

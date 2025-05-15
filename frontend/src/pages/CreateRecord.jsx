@@ -42,7 +42,7 @@ function CreateRecord() {
     const formData = new FormData();
     let recordSend = {};
 
-    if (!param.id) {
+    if (!edit) {
       const payload = {
         procedimiento: data.procedimiento,
         procedimiento_descrip: data.procedimiento_descrip,
@@ -84,7 +84,7 @@ function CreateRecord() {
         setPetId(record.id_mascota)
         setValue("procedimiento", record.procedimiento);
         setValue("procedimiento_descrip", record.procedimiento_descrip);
-        setValue("estado", record.estado); // si querés permitir modificar estado
+        setValue("estado", record.estado); // permitir modificar estado
         setValue("id_veterinario", record.id_veterinario)
       });
     }
@@ -119,6 +119,7 @@ function CreateRecord() {
               })}
             ></textarea>
             <input type="hidden" {...register("id_veterinario")} />
+            
             <Button>{edit ? "EDITAR REGISTRO" : "CREAR REGISTRO"}</Button>
           </form>
         </Card>
