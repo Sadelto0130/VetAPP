@@ -51,14 +51,13 @@ function CreateRecord() {
         id_duenio: String(user.idduenio),
         id_mascota: param.id,
       };
-      console.log("payload:", payload)
       try {
         recordSend = await createRegistro(payload);
       } catch (error) {
         console.error("Error al crear el registro:", error);
       } finally {
         setLoading(false);
-        navigate(`/pet/${petId}/records`); 
+        navigate(`/pet/${param.id}/records`); 
       }
     } else {
       const payload = {
@@ -76,12 +75,13 @@ function CreateRecord() {
         console.error("Error al actualizar mascota:", error);
       } finally {
         setLoading(false);
-        navigate(`/pet/${petId}/profile`); 
+        navigate(`/pet/${param.id}/profile`); 
       }
     }
   });
 
   useEffect(() => {
+    console.log(param.id)
     if (location.pathname.includes("/edit_record/")) {
       setEdit(true);
       loadRecord(param.id).then((record) => {
