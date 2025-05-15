@@ -4,12 +4,13 @@ import { PORT } from './config.js';
 
 const server = http.createServer(app);
 
-// Setear timeout a 30 segundos
-server.setTimeout(30000, (socket) => {
-  console.log('Server timeout!');
+// Extiende el tiempo de vida de la conexión
+server.keepAliveTimeout = 120000; // 2 minutos
+server.headersTimeout = 125000;   // Evita que se corte antes del keep-alive
 
-  // Opcional: puedes destruir la conexión si quieres
-  socket.destroy();
+// Setear timeout a 2 minutos para respuestas largas
+server.setTimeout(120000, (socket) => {
+  console.log('Server timeout!');
 });
 
 // Ahora iniciar el servidor
