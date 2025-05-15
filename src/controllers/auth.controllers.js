@@ -32,11 +32,11 @@ export const signin = async (req, res) => {
       idduenio: result.rows[0].idduenio,
       nombre: result.rows[0].nombre,
       tipousuario: result.rows[0].tipousuario,
-    }); 
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
@@ -52,19 +52,21 @@ export const signin = async (req, res) => {
       });
     }
   }
-}; 
+};
 
 export const register = async (req, res, next) => {
-  const { nombre, apellido, email, password, tipousuario, estado } = req.body;
+  let {
+    nombre,
+    apellido,
+    email,
+    password,
+    tipousuario = "usuario",
+    estado = "activo",
+  } = req.body;
 
   try {
     const hashedPass = await bcrypt.hash(password, 10);
-    const gravatar = `https://robohash.org/${nombre}+${apellido}?set=set4`
-
-    if(!tipousuario || !estado) {
-      tipousuario = "usuario";
-      estado = "activo";
-    }
+    const gravatar = `https://robohash.org/${nombre}+${apellido}?set=set4`;
 
     const result = await pool.query(
       "INSERT INTO users(nombre, apellido, email, password, tipousuario, estado, gravatar) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",

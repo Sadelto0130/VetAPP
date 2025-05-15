@@ -27,7 +27,7 @@ function LoginPage() {
   });
 
   return (
-    <Container
+    <div
       className="h-[calc(100vh-7rem)] flex items-center justify-center relative bg-center bg-no-repeat"
     >
       <Card>
@@ -60,7 +60,7 @@ function LoginPage() {
           <Button> INICIAR SESIÓN </Button>
         </form>
       </Card>
-    </Container>
+    </div>
   );
 }
 
