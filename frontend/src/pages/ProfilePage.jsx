@@ -19,8 +19,6 @@ function ProfilePage() {
       }
       try {
         await getUserRecords();
-        console.log("Registros tras getUserRecords:", registros);
-        console.log("Errores tras getUserRecords:", errors);
       } catch (error) {
         console.error(error);
       } finally {

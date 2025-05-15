@@ -19,7 +19,7 @@ function EditRecord() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }, 
     setValue,
   } = useForm();
 

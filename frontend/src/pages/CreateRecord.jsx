@@ -75,7 +75,7 @@ function CreateRecord() {
         console.error("Error al actualizar mascota:", error);
       } finally {
         setLoading(false);
-        navigate(`/pet/${param.id}/profile`);
+        navigate(`/pet/${petId}/profile`);
       }
     }
   });
