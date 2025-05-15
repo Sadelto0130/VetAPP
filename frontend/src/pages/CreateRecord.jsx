@@ -42,15 +42,16 @@ function CreateRecord() {
     const formData = new FormData();
     let recordSend = {};
 
-    if (!edit) {
-      console.log("payload:", data)
+    if (!edit) {      
       const payload = {
         procedimiento: data.procedimiento,
         procedimiento_descrip: data.procedimiento_descrip,
         estado: "Pendiente",
-        id_veterinario: data.id_veterinario
+        id_veterinario: data.id_veterinario,
+        id_duenio: user.idduenio,
+        id_mascota: param.id,
       };
-
+      console.log("payload:", payload)
       try {
         recordSend = await createRegistro(payload);
       } catch (error) {
