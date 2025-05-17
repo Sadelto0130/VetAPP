@@ -86,7 +86,13 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      setLoading(true);
+      const PUBLIC_ROUTES = ["/", "/login", "/register"];
+      const isPublicRoute = PUBLIC_ROUTES.includes(location.pathname);
+
+      if (isPublicRoute) {
+        setLoading(false); // No intentes autenticar
+        return;
+      }
       try {
         const res = await axios.get("/me");
         setUser(res.data);
