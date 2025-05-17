@@ -11,35 +11,38 @@ function ProfilePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const profile = async () => {
-      
-      if (user === null) {
-        navigate("/login");
-        setLoading(false);
-        return;
-      }
-      try {
-        await getUserRecords();
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const profile = async () => {
+    console.log("Entrando al useEffect, user:", user);
 
-    profile();
-  }, [user]);
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      await getUserRecords();
+    } catch (error) {
+      console.error("Error al obtener registros", error);
+    } finally {
+      setLoading(false);
+      console.log("Loading finalizado");
+    }
+  };
+
+  profile();
+}, [user]);
+
 
   return (
     <>
       {loading ? (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white">Loading...</div>
         </div>
       ) : (
         <>
           {errors ? (
-            <p className="text-red-500 text-center mt-2 mb-1">el errors</p>
+            <p className="text-red-500 text-center mt-2 mb-1">Errors: {errors}</p>
           ) : registros.length === 0 ? (
             <p className="text-gray-600 text-center mt-4 text-lg">
               No tienes registros de mascotas
