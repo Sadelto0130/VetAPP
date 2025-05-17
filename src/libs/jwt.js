@@ -15,3 +15,9 @@ export const createAcessToken = (payload) => {
     );
   });
 };
+
+export const createRefreshToken = (payload) => {
+  return jwt.sign(payload, "xyz123", {
+    expiresIn: "7d",
+  });
+}

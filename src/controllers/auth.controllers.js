@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { pool } from "../db.js";
-import { createAcessToken } from "../libs/jwt.js";
+import { createAcessToken, createRefreshToken } from "../libs/jwt.js";
 import md5 from "md5";
 
 export const signin = async (req, res) => {
@@ -34,11 +34,24 @@ export const signin = async (req, res) => {
       tipousuario: result.rows[0].tipousuario,
     });
 
+    const regfreshToken = await createRefreshToken({
+      idduenio: result.rows[0].idduenio,
+      nombre: result.rows[0].nombre,
+      tipousuario: result.rows[0].tipousuario,
+    });
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    res.cookie("refreshToken", regfreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // devuelve el usuario sin la contraseña
@@ -79,12 +92,25 @@ export const register = async (req, res, next) => {
       tipousuario: result.rows[0].tipousuario,
     });
 
+    const refreshToken = await createRefreshToken({
+      idduenio: result.rows[0].idduenio,
+      nombre: result.rows[0].nombre,
+      tipousuario: result.rows[0].tipousuario,
+    });
+
     // Se crea la cookie con el token
     res.cookie("token", token, {
       sameSite: "none",
       httpOnly: true,
       secure: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // devuelve el usuario sin la contraseña
@@ -102,8 +128,19 @@ export const register = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("token");
-  res.sendStatus(200);
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
+
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
+
+  res.status(200).json({ message: "Sesión cerrada correctamente" });
 };
 
 export const profile = async (req, res) => {
@@ -147,4 +184,53 @@ export const updateProfile = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const me = async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM users WHERE idduenio = $1", [
+      req.userId,
+    ]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const user = { ...result.rows[0] };
+    delete user.password;
+    return res.json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error al obtener usuario" });
+  }
+};
+
+export const refreshToken = async (req, res) => {
+  const token = req.cookies.refreshToken;
+
+  if (!token) {
+    return res.status(401).json({
+      message: "No hay refresh token",
+    });
+  }
+
+  jwt.verify(token, "xyz123", (err, user) => {
+    if (err)
+      return res.status(403).json({ message: "Refresh token no valido" });
+
+    const newAccessToken = createAcessToken({
+      idduenio: user.idduenio,
+      nombre: user.nombre,
+      tipousuario: user.tipousuario,
+    });
+
+    res.cookie("token", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 115 * 60 * 1000, // 1 day
+    });
+
+    return res.json({ message: "Token actualizado" });
+  });
 };

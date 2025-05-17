@@ -84,23 +84,28 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    setLoading(true);
-    if (Cookie.get("token")) {
-      axios
-        .get("/profile")
-        .then((res) => {
+    const checkAuth = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get("/me");
+        setUser(res.data);
+        setIsAuth(true);
+      } catch (error) {
+        // Si falla /me, intenta renovar
+        try {
+          await axios.get("/refresh-token", { withCredentials: true });
+          const res = await axios.get("/me", { withCredentials: true });
           setUser(res.data);
           setIsAuth(true);
-          setLoading(false);
-        })
-        .catch((err) => {
+        } catch (refreshErr) {
           setUser(null);
           setIsAuth(false);
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
   }, []);
 
   return (
