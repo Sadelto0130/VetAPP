@@ -60,6 +60,7 @@ export function AuthProvider({ children }) {
     await axios.post("/logout");
     setUser(null);
     setIsAuth(false);
+    setErrors(null);
     navigate("/");
   };
 
