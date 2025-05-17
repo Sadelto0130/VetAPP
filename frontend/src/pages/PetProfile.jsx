@@ -52,7 +52,7 @@ function PetProfile() {
   return (
     <>
       <Container className="relative z-10">
-        <div className="flex flex-col md:flex-row max-w-full overflow-hidden h-auto md:h-[calc(100vh-7rem)]">
+        <div className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4 max-w-full overflow-hidden h-auto md:h-[calc(100vh-7rem)]">
           {/* Panel lateral fijo (solo en md+) */}
           <div className="w-full md:w-1/4 md:sticky md:top-0 md:h-screen overflow-hidden">
             <div className="bg-white p-4 border-t-4 border-blue-400 h-full flex flex-col">
