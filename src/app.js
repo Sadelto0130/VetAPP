@@ -17,6 +17,9 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Ruta absoluta al dist del frontend
+const frontendPath = path.join(__dirname, "../frontend/dist");
+
 //Configuracion de express
 const app = express();
 
@@ -34,19 +37,13 @@ app.use((req, res, next) => {
 app.use(morgan("dev"));
 app.use(cookieParser()); // lee las cookies que se envian desde el frontend
 app.use(express.json()); // convierte todo lo que llega en json a javascript
+app.use(express.static(frontendPath)); // Servir archivos estáticos desde dist
 //app.use(express.urlencoded({ extended: true })); // permite enviar formularios desde el frontend
-
-// Servir archivos estáticos de React
-app.use(express.static(path.join(__dirname, "../frontend/dist"))); // ajustá si `dist` está en otra carpeta
 
 app.get("/", (req, res) => res.json({ message: "Bienvenidos pagina vet" }));
 app.get("/api/ping", async (req, res) => {
   const result = await pool.query('SELECT NOW()')
   return res.json(result.rows[0])
-});
-// Redirigir todo lo que no sea API a React
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 
 app.use("/api", registroRoutes);
@@ -61,6 +58,12 @@ app.use((err, req, res, next) => {
     status: "Error",
     message: err.message,
   });
+});
+
+
+// Redirigir todo lo que no sea API a React
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 
 export default app;
