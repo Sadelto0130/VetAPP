@@ -12,23 +12,18 @@ function ProfilePage() {
 
   useEffect(() => {
     const profile = async () => {
-      console.log("Entrando al useEffect, user:", user);
-
       if (!user) {
         navigate("/login");
         return;
       }
-
       try {
         await getUserRecords();
       } catch (error) {
         console.error("Error al obtener registros", error);
       } finally {
         setLoading(false);
-        console.log("Loading finalizado");
       }
     };
-
     profile();
   }, [user]);
 
@@ -80,13 +75,6 @@ function ProfilePage() {
                     <h3 className="font-medium text-gray-900 text-left pb-2 text-lg sm:text-xl">
                       REGISTROS RECIENTES
                     </h3>
-
-                    {errors && errors !== "no tienes registro de mascotas" && (
-                      <p className="text-red-500 text-center mt-2 mb-1">
-                        {errors}
-                      </p>
-                    )}
-
                     {registros.length === 0 ? (
                       <p className="text-gray-600 text-center mt-4 text-lg">
                         No tienes registros de mascotas
