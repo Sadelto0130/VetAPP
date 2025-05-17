@@ -41,9 +41,7 @@ function ProfilePage() {
         </div>
       ) : (
         <>
-          {errors ? (
-            <p className="text-red-500 text-center mt-2 mb-1">Errors: {errors}</p>
-          ) : (
+          {(
             <div className="items-center justify-center relative pt-20 ">
               <div className="bg-white/80 relative shadow rounded-lg w-5/6 md:w-5/6  lg:w-4/6 xl:w-3/6 mx-auto pb-6 pl-2 pr-2">
                 <div className="flex justify-center">
