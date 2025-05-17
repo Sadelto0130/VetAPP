@@ -39,7 +39,7 @@ function ProfilePage() {
       ) : (
         <>
           {errors ? (
-            <p className="text-red-500 text-center mt-2 mb-1"></p>
+            <p className="text-red-500 text-center mt-2 mb-1">el errors</p>
           ) : registros.length === 0 ? (
             <p className="text-gray-600 text-center mt-4 text-lg">
               No tienes registros de mascotas
