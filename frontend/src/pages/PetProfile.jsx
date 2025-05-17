@@ -106,7 +106,7 @@ function PetProfile() {
           </div>
 
           {/* Contenido con scroll interno solo para registros */}
-          <div className="w-full md:w-3/4 h-auto md:h-screen overflow-y-auto px-4">
+          <div className="w-full md:w-3/4 h-full md:h-screen overflow-y-auto">
             <div className="bg-white p-4 rounded shadow">
               <h2 className="text-xl font-semibold mb-4">Registros</h2>
               <div className="min-w-full table-auto">
