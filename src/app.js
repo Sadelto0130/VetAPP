@@ -63,7 +63,7 @@ app.use((err, req, res, next) => {
 
 // Redirigir todo lo que no sea API a React
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist", "index.html"));
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 export default app;
